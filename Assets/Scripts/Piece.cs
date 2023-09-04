@@ -9,7 +9,7 @@ public class Piece : MonoBehaviour
     public Vector3Int position { get; private set; }
     public Vector3Int[] cells { get; private set; }
     public MinoData data { get; private set; }
-    void Init(Board board, Vector3Int position, MinoData data)
+    public void Init(Board board, Vector3Int position, MinoData data)
     {
         this.board = board;
         this.position = position;

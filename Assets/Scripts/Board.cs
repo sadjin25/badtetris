@@ -6,15 +6,17 @@ using UnityEngine.Tilemaps;
 public class Board : MonoBehaviour
 {
     public Tilemap tilemap { get; private set; }
-    [SerializeField] MinoData[] minoes;
+    public Piece activePiece { get; private set; }
+    [SerializeField] MinoData[] baseMinoes;
+    [SerializeField] Vector3Int spawnPos;
 
     void Awake()
     {
         tilemap = GetComponentInChildren<Tilemap>();
-
-        for (int i = 0; i < this.minoes.Length; i++)
+        this.activePiece = GetComponentInChildren<Piece>();
+        for (int i = 0; i < this.baseMinoes.Length; i++)
         {
-            this.minoes[i].Init();
+            this.baseMinoes[i].Init();
         }
     }
 
@@ -25,13 +27,21 @@ public class Board : MonoBehaviour
 
     public void SpawnPieces()
     {
-        int rand = Random.Range(0, this.minoes.Length);
-        MinoData data = this.minoes[rand];
+        int rand = Random.Range(0, this.baseMinoes.Length);
+        MinoData data = this.baseMinoes[rand];
+        Debug.Log(data.mino.ToString());
+        activePiece.Init(this, spawnPos, data);
+        Set(activePiece);
     }
 
-    void Set()
+    void Set(Piece piece)
     {
-        
+        for (int i = 0; i < piece.cells.Length; i++)
+        {
+            Vector3Int tilePos = piece.cells[i] + piece.position;
+            this.tilemap.SetTile(tilePos, piece.data.tile);
+            Debug.Log("DRAW" + i.ToString());
+        }
     }
 
 }
