@@ -57,7 +57,6 @@ public class Piece : MonoBehaviour
     bool Move(Vector2Int moveVec)
     {
         Vector3Int newPos = this.position + (Vector3Int)moveVec;
-        Debug.Log("newpos" + newPos);
 
         bool valid = board.IsValidPosition(this, newPos);
         if (valid)
@@ -69,7 +68,20 @@ public class Piece : MonoBehaviour
 
     void Rotate(int rotateDir)
     {
-        rotateIndex = Wrap(rotateIndex + rotateDir, 0, 3);
+        int originalRot = this.rotateIndex;
+        rotateIndex = Wrap(rotateIndex + rotateDir, 0, 4);
+
+        ApplyRotation(rotateDir);
+
+        if (!WallKicks(rotateIndex, rotateDir))
+        {
+            this.rotateIndex = originalRot;
+            ApplyRotation(-rotateDir);
+        }
+    }
+
+    void ApplyRotation(int rotateDir)
+    {
         for (int i = 0; i < this.cells.Length; i++)
         {
             Vector3 cell = this.cells[i];
@@ -90,17 +102,42 @@ public class Piece : MonoBehaviour
                     break;
             }
             this.cells[i] = new Vector3Int(x, y, 0);
-
         }
+    }
+
+    bool WallKicks(int rotateIndex, int rotateDir)
+    {
+        int wallkickIndex = GetWallKickIndex(rotateIndex, rotateDir);
+        for (int i = 0; i < this.data.wallkicks.GetLength(1); i++)
+        {
+            Vector2Int translation = this.data.wallkicks[wallkickIndex, i];
+
+            if (Move(translation))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    int GetWallKickIndex(int rotateIndex, int rotateDir)
+    {
+        int wallkickIndex = rotateIndex * 2;
+
+        if (rotateDir < 0)
+        {
+            wallkickIndex--;
+        }
+        return Wrap(wallkickIndex, 0, this.data.wallkicks.GetLength(0));
     }
 
     int Wrap(int target, int min, int max)
     {
         if (target < min)
         {
-            return max;
+            return max - 1;
         }
-        if (target > max)
+        if (target >= max)
         {
             return min;
         }

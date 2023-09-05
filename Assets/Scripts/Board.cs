@@ -57,7 +57,6 @@ public class Board : MonoBehaviour
         for (int i = 0; i < piece.cells.Length; i++)
         {
             Vector3Int tilePos = piece.cells[i] + position;
-            Debug.Log("TILE" + i + " POS " + tilePos);
 
             if (!bounds.Contains((Vector2Int)tilePos))
             {
