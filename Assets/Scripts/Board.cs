@@ -10,6 +10,7 @@ public class Board : MonoBehaviour
     [SerializeField] MinoData[] baseMinoes;
     [SerializeField] Vector3Int spawnPos;
 
+    readonly RectInt bounds = new RectInt(new Vector2Int(-5, -10), new Vector2Int(10, 20));
     void Awake()
     {
         tilemap = GetComponentInChildren<Tilemap>();
@@ -29,19 +30,45 @@ public class Board : MonoBehaviour
     {
         int rand = Random.Range(0, this.baseMinoes.Length);
         MinoData data = this.baseMinoes[rand];
-        Debug.Log(data.mino.ToString());
         activePiece.Init(this, spawnPos, data);
         Set(activePiece);
     }
 
-    void Set(Piece piece)
+    public void Set(Piece piece)
     {
         for (int i = 0; i < piece.cells.Length; i++)
         {
             Vector3Int tilePos = piece.cells[i] + piece.position;
             this.tilemap.SetTile(tilePos, piece.data.tile);
-            Debug.Log("DRAW" + i.ToString());
         }
     }
 
+    public void Clear(Piece piece)
+    {
+        for (int i = 0; i < piece.cells.Length; i++)
+        {
+            Vector3Int tilePos = piece.cells[i] + piece.position;
+            this.tilemap.SetTile(tilePos, null);
+        }
+    }
+
+    public bool IsValidPosition(Piece piece, Vector3Int position)
+    {
+        for (int i = 0; i < piece.cells.Length; i++)
+        {
+            Vector3Int tilePos = piece.cells[i] + position;
+            Debug.Log("TILE" + i + " POS " + tilePos);
+
+            if (!bounds.Contains((Vector2Int)tilePos))
+            {
+                return false;
+            }
+
+            if (tilemap.HasTile(tilePos))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }

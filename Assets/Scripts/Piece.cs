@@ -9,6 +9,25 @@ public class Piece : MonoBehaviour
     public Vector3Int position { get; private set; }
     public Vector3Int[] cells { get; private set; }
     public MinoData data { get; private set; }
+
+    void Update()
+    {
+        board.Clear(this);
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            Move(Vector2Int.left);
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            Move(Vector2Int.right);
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            Move(Vector2Int.down);
+        }
+        board.Set(this);
+    }
+
     public void Init(Board board, Vector3Int position, MinoData data)
     {
         this.board = board;
@@ -24,4 +43,17 @@ public class Piece : MonoBehaviour
             this.cells[i] = (Vector3Int)data.cells[i];
         }
     }
+
+    bool Move(Vector2Int moveVec)
+    {
+        Vector3Int newPos = this.position + (Vector3Int)moveVec;
+        Debug.Log("newpos" + newPos);
+        bool valid = board.IsValidPosition(this, newPos);
+        if (valid)
+        {
+            position = newPos;
+        }
+        return valid;
+    }
+
 }
