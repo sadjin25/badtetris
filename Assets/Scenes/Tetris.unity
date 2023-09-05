@@ -614,7 +614,7 @@ MonoBehaviour:
     tile: {fileID: 11400000, guid: d4fda8bf71f04a1429b22346aee34c2c, type: 2}
   - mino: 6
     tile: {fileID: 11400000, guid: 9c08c4278eddf5c4b96601310ce88766, type: 2}
-  spawnPos: {x: -1, y: 0, z: 0}
+  spawnPos: {x: -1, y: 8, z: 0}
 --- !u!114 &1716189038
 MonoBehaviour:
   m_ObjectHideFlags: 0
