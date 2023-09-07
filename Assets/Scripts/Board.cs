@@ -70,4 +70,58 @@ public class Board : MonoBehaviour
         }
         return true;
     }
+
+    public void ClearLines()
+    {
+        // naive Style
+        int row = bounds.yMin;
+        while (row < bounds.yMax)
+        {
+            if (IsLineFull(row))
+            {
+                EachLineClear(row);
+                PushLinesDown(row);
+            }
+            else
+            {
+                ++row;
+            }
+        }
+    }
+
+    bool IsLineFull(int row)
+    {
+        for (int col = bounds.xMin; col < bounds.xMax; ++col)
+        {
+            Vector3Int pos = new Vector3Int(col, row, 0);
+            if (!tilemap.HasTile(pos))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    void EachLineClear(int row)
+    {
+        for (int col = bounds.xMin; col < bounds.xMax; ++col)
+        {
+            Vector3Int pos = new Vector3Int(col, row, 0);
+            tilemap.SetTile(pos, null);
+        }
+    }
+
+    void PushLinesDown(int startRow)
+    {
+        for (int row = startRow; row < bounds.yMax; ++row)
+        {
+            for (int col = bounds.xMin; col < bounds.xMax; ++col)
+            {
+                Vector3Int nextLineCellPos = new Vector3Int(col, row + 1, 0);
+                TileBase aboveTile = tilemap.GetTile(nextLineCellPos);
+                Vector3Int curCellPos = new Vector3Int(col, row, 0);
+                tilemap.SetTile(curCellPos, aboveTile);
+            }
+        }
+    }
 }
