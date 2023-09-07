@@ -31,6 +31,12 @@ public class Board : MonoBehaviour
         int rand = Random.Range(0, this.baseMinoes.Length);
         MinoData data = this.baseMinoes[rand];
         activePiece.Init(this, spawnPos, data);
+
+        if (!IsValidPosition(activePiece, spawnPos))
+        {
+            GameOver();
+        }
+
         Set(activePiece);
     }
 
@@ -123,5 +129,10 @@ public class Board : MonoBehaviour
                 tilemap.SetTile(curCellPos, aboveTile);
             }
         }
+    }
+
+    void GameOver()
+    {
+        tilemap.ClearAllTiles();
     }
 }
