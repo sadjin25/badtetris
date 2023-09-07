@@ -603,7 +603,7 @@ MonoBehaviour:
   - mino: 0
     tile: {fileID: 11400000, guid: e87a8e49b99c33d4887b877d14b4e5ec, type: 2}
   - mino: 1
-    tile: {fileID: 11400000, guid: 3a10442716a1ab34698374bf8a717c28, type: 2}
+    tile: {fileID: 11400000, guid: 7f014cbe92376614580f42d025d9fed5, type: 2}
   - mino: 2
     tile: {fileID: 11400000, guid: 36487be1eb29f5c4692e783dedf66cf9, type: 2}
   - mino: 3
@@ -627,6 +627,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5bfa384743ac284780d361ab519a615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stepDelay: 1
+  lockDelay: 0.5
 --- !u!1 &2033586757
 GameObject:
   m_ObjectHideFlags: 0
