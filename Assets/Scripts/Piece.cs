@@ -11,9 +11,17 @@ public class Piece : MonoBehaviour
     public MinoData data { get; private set; }
     public int rotateIndex { get; private set; }
 
+    [SerializeField] float stepDelay = 1f;
+    [SerializeField] float lockDelay = .5f;
+
+    float stepTime;
+    float lockTime;
+
     void Update()
     {
         board.Clear(this);
+        lockTime += Time.deltaTime;
+        stepTime += Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.Z))
         {
             Rotate(-1);
@@ -34,6 +42,16 @@ public class Piece : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             Move(Vector2Int.down);
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            HardDrop();
+        }
+
+        if (stepTime >= stepDelay)
+        {
+            ResetStepTime();
+            Step();
         }
         board.Set(this);
     }
@@ -62,6 +80,7 @@ public class Piece : MonoBehaviour
         if (valid)
         {
             position = newPos;
+            ResetLockTime();
         }
         return valid;
     }
@@ -142,6 +161,43 @@ public class Piece : MonoBehaviour
             return min;
         }
         return target;
+    }
+
+    void ResetLockTime()
+    {
+        lockTime = 0f;
+    }
+
+    void ResetStepTime()
+    {
+        stepTime = 0f;
+    }
+
+    void Step()
+    {
+        if (!Move(Vector2Int.down))
+        {
+            if (lockTime >= lockDelay)
+            {
+                ResetLockTime();
+                Lock();
+            }
+        }
+    }
+
+    void Lock()
+    {
+        board.Set(this);
+        board.SpawnPieces();
+    }
+
+    void HardDrop()
+    {
+        while (Move(Vector2Int.down))
+        {
+            continue;
+        }
+        Lock();
     }
 
 }
