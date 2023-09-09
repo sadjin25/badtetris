@@ -10,7 +10,7 @@ public class Board : MonoBehaviour
     [SerializeField] MinoData[] baseMinoes;
     [SerializeField] Vector3Int spawnPos;
 
-    readonly RectInt bounds = new RectInt(new Vector2Int(-5, -10), new Vector2Int(10, 20));
+    public readonly RectInt bounds = new RectInt(new Vector2Int(-5, -10), new Vector2Int(10, 20));
     void Awake()
     {
         tilemap = GetComponentInChildren<Tilemap>();
