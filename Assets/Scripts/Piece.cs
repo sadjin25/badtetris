@@ -22,6 +22,8 @@ public class Piece : MonoBehaviour
         board.Clear(this);
         lockTime += Time.deltaTime;
         stepTime += Time.deltaTime;
+
+        #region Move_Input
         if (Input.GetKeyDown(KeyCode.Z))
         {
             Rotate(-1);
@@ -47,7 +49,7 @@ public class Piece : MonoBehaviour
         {
             HardDrop();
         }
-
+        #endregion
         if (stepTime >= stepDelay)
         {
             ResetStepTime();
@@ -85,6 +87,7 @@ public class Piece : MonoBehaviour
         return valid;
     }
 
+    #region Rotate
     void Rotate(int rotateDir)
     {
         int originalRot = this.rotateIndex;
@@ -149,6 +152,8 @@ public class Piece : MonoBehaviour
         }
         return Wrap(wallkickIndex, 0, this.data.wallkicks.GetLength(0));
     }
+
+    #endregion
 
     int Wrap(int target, int min, int max)
     {
