@@ -1,15 +1,16 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+[System.Serializable]
 public enum Mino
 {
-    I,
-    O,
-    T,
-    L,
-    J,
-    S,
-    Z,
+    I = 0,
+    O = 1,
+    T = 2,
+    L = 3,
+    J = 4,
+    S = 5,
+    Z = 6,
 }
 
 [System.Serializable]

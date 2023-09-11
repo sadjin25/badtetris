@@ -194,7 +194,7 @@ public class Piece : MonoBehaviour
     {
         board.Set(this);
         board.ClearLines();
-        board.SpawnPieces();
+        board.SetActivePiece();
     }
 
     void HardDrop()

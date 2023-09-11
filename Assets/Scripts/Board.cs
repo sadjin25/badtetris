@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -10,9 +11,18 @@ public class Board : MonoBehaviour
     [SerializeField] MinoData[] baseMinoes;
     [SerializeField] Vector3Int spawnPos;
 
+    List<Piece> nextMinoes;         // Why List? => Add/Remove is easy.
+    public static int maxNextNum { get { return 5; } }
+    public event EventHandler<OnNextMinoChangedArgs> OnNextMinoChanged;
+    public class OnNextMinoChangedArgs : EventArgs
+    {
+        public List<Piece> nextMinoes;
+    }
+
     public readonly RectInt bounds = new RectInt(new Vector2Int(-5, -10), new Vector2Int(10, 20));
     void Awake()
     {
+        nextMinoes = new List<Piece>();
         tilemap = GetComponentInChildren<Tilemap>();
         this.activePiece = GetComponentInChildren<Piece>();
         for (int i = 0; i < this.baseMinoes.Length; i++)
@@ -23,20 +33,56 @@ public class Board : MonoBehaviour
 
     void Start()
     {
-        SpawnPieces();
+        for (int i = 0; i < maxNextNum; ++i)
+        {
+            SpawnPieces();
+        }
+
+        SetActivePiece();
     }
+
+    #region Getter/Setter
+    public Mino GetCurrentMinoType()
+    {
+        return activePiece.data.mino;
+    }
+
+    public int GetCurrentNextSize()
+    {
+        return nextMinoes.Count;
+    }
+    #endregion
+
+    #region Basic Game Functions
 
     public void SpawnPieces()
     {
-        int rand = Random.Range(0, this.baseMinoes.Length);
-        MinoData data = this.baseMinoes[rand];
-        activePiece.Init(this, spawnPos, data);
+        if (nextMinoes.Count >= maxNextNum) return;
 
+        int rand = UnityEngine.Random.Range(0, this.baseMinoes.Length);
+        MinoData data = this.baseMinoes[rand];
+        Piece newPiece = new Piece();
+        newPiece.Init(this, spawnPos, data);
+
+        nextMinoes.Add(newPiece);
+
+        if (GetCurrentNextSize() >= maxNextNum)
+        {
+            OnNextMinoChanged?.Invoke(this, new OnNextMinoChangedArgs { nextMinoes = this.nextMinoes });
+        }
+    }
+
+    public void SetActivePiece()
+    {
+        Piece piece = nextMinoes[0];
+        nextMinoes.Remove(nextMinoes[0]);
+        SpawnPieces();
+
+        activePiece.Init(this, spawnPos, piece.data);
         if (!IsValidPosition(activePiece, spawnPos))
         {
             GameOver();
         }
-
         Set(activePiece);
     }
 
@@ -135,4 +181,5 @@ public class Board : MonoBehaviour
     {
         tilemap.ClearAllTiles();
     }
+    #endregion
 }
