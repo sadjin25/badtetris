@@ -18,6 +18,11 @@ public class Board : MonoBehaviour
     {
         public List<Piece> nextMinoes;
     }
+    public event EventHandler<OnActiveMinoChangedArgs> OnActiveMinoChanged;
+    public class OnActiveMinoChangedArgs : EventArgs
+    {
+        public Piece activePiece;
+    }
 
     public readonly RectInt bounds = new RectInt(new Vector2Int(-5, -10), new Vector2Int(10, 20));
     void Awake()
@@ -84,6 +89,8 @@ public class Board : MonoBehaviour
             GameOver();
         }
         Set(activePiece);
+
+        OnActiveMinoChanged?.Invoke(this, new OnActiveMinoChangedArgs { activePiece = activePiece });
     }
 
     public void Set(Piece piece)

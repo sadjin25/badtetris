@@ -11,11 +11,42 @@ public class Piece : MonoBehaviour
     public MinoData data { get; private set; }
     public int rotateIndex { get; private set; }
 
+    //--------------------DOWNSTEP TIMES----------------
     [SerializeField] float stepDelay = 1f;
     [SerializeField] float lockDelay = .5f;
 
     float stepTime;
     float lockTime;
+    //-----------------------INPUTS-------------------------
+    [SerializeField] InputReader inputReader;
+
+    //WARNING : if some action function(rotate, harddrop.. etc) is used, then CLEAR input vars.
+    //          Clearing always be performed in CheckInputActions()!
+    Vector2 moveInput;
+    bool hardDropInput;
+    bool softDropInput;
+    bool rotateLInput;
+    bool rotateRInput;
+
+    void OnEnable()
+    {
+        inputReader.HardDropEvent += OnHardDrop;
+        inputReader.SoftDropEvent += OnSoftDrop;
+        inputReader.SoftDropCancelEvent += OnSoftDropCancel;
+        inputReader.MoveEvent += OnMove;
+        inputReader.RotateLEvent += OnRotateL;
+        inputReader.RotateREvent += OnRotateR;
+    }
+
+    void OnDisable()
+    {
+        inputReader.HardDropEvent -= OnHardDrop;
+        inputReader.SoftDropEvent -= OnSoftDrop;
+        inputReader.SoftDropCancelEvent -= OnSoftDropCancel;
+        inputReader.MoveEvent -= OnMove;
+        inputReader.RotateLEvent -= OnRotateL;
+        inputReader.RotateREvent -= OnRotateR;
+    }
 
     void Update()
     {
@@ -23,33 +54,8 @@ public class Piece : MonoBehaviour
         lockTime += Time.deltaTime;
         stepTime += Time.deltaTime;
 
-        #region Move_Input
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            Rotate(-1);
-        }
-        else if (Input.GetKeyDown(KeyCode.X))
-        {
-            Rotate(1);
-        }
+        CheckInputActions();
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            Move(Vector2Int.left);
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            Move(Vector2Int.right);
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            Move(Vector2Int.down);
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            HardDrop();
-        }
-        #endregion
         if (stepTime >= stepDelay)
         {
             ResetStepTime();
@@ -58,22 +64,62 @@ public class Piece : MonoBehaviour
         board.Set(this);
     }
 
-    public void Init(Board board, Vector3Int position, MinoData data)
+    void CheckInputActions()
     {
-        this.board = board;
-        this.position = position;
-        this.data = data;
-        if (this.cells == null)
+        if (rotateLInput)
         {
-            this.cells = new Vector3Int[data.cells.Length];
+            rotateLInput = false;
+            Rotate(-1);
+        }
+        else if (rotateRInput)
+        {
+            rotateRInput = false;
+            Rotate(1);
         }
 
-        for (int i = 0; i < data.cells.Length; i++)
+        // TODO : When Move, use DAS/ARR!
+        if (moveInput.x < 0.2f)
         {
-            this.cells[i] = (Vector3Int)data.cells[i];
+            moveInput = new Vector2();
+            Move(Vector2Int.left);
+        }
+        else if (moveInput.x > 0.2f)
+        {
+            moveInput = new Vector2();
+            Move(Vector2Int.right);
+        }
+
+        else if (softDropInput)
+        {
+            softDropInput = false;
+            Move(Vector2Int.down);
+        }
+
+        else if (hardDropInput)
+        {
+            hardDropInput = false;
+            HardDrop();
         }
     }
 
+    #region Event Listeners
+    void OnMove(Vector2 input)
+    {
+        moveInput = input;
+    }
+
+    void OnHardDrop() => hardDropInput = true;
+
+    void OnSoftDrop() => softDropInput = true;
+
+    void OnSoftDropCancel() => softDropInput = false;
+
+    void OnRotateL() => rotateLInput = true;
+
+    void OnRotateR() => rotateRInput = true;
+    #endregion
+
+    #region Move/Rotate
     bool Move(Vector2Int moveVec)
     {
         Vector3Int newPos = this.position + (Vector3Int)moveVec;
@@ -87,7 +133,7 @@ public class Piece : MonoBehaviour
         return valid;
     }
 
-    #region Rotate
+
     void Rotate(int rotateDir)
     {
         int originalRot = this.rotateIndex;
@@ -155,6 +201,23 @@ public class Piece : MonoBehaviour
 
     #endregion
 
+    #region Game Mechanic
+    public void Init(Board board, Vector3Int position, MinoData data)
+    {
+        this.board = board;
+        this.position = position;
+        this.data = data;
+        if (this.cells == null)
+        {
+            this.cells = new Vector3Int[data.cells.Length];
+        }
+
+        for (int i = 0; i < data.cells.Length; i++)
+        {
+            this.cells[i] = (Vector3Int)data.cells[i];
+        }
+    }
+
     int Wrap(int target, int min, int max)
     {
         if (target < min)
@@ -205,5 +268,5 @@ public class Piece : MonoBehaviour
         }
         Lock();
     }
-
+    #endregion
 }
