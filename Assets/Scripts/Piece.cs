@@ -78,7 +78,7 @@ public class Piece : MonoBehaviour
         }
 
         // TODO : When Move, use DAS/ARR!
-        if (moveInput.x < 0.2f)
+        if (moveInput.x < -0.2f)
         {
             moveInput = new Vector2();
             Move(Vector2Int.left);

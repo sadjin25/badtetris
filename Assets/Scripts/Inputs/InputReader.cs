@@ -52,7 +52,7 @@ public class InputReader : DescriptionBaseSO
 
     public void OnSoftDropCanceled(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.canceled)
         {
             SoftDropCancelEvent?.Invoke();
         }
