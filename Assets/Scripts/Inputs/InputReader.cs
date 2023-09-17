@@ -40,6 +40,10 @@ public class InputReader : DescriptionBaseSO
         {
             MoveEvent?.Invoke(context.ReadValue<Vector2>());
         }
+        if (context.canceled)
+        {
+            MoveEvent?.Invoke(Vector2.zero);
+        }
     }
 
     public void OnSoftDrop(InputAction.CallbackContext context)

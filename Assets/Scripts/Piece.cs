@@ -15,7 +15,7 @@ public class Piece : MonoBehaviour
     [SerializeField] float stepDelay = 1f;
     [SerializeField] float lockDelay = .5f;
     [SerializeField] float softDropDelay = .15f;
-    [SerializeField] float das = .15f;
+    [SerializeField] float das = .3f;
     [SerializeField] float arr = 0f;
 
     float stepTime;
@@ -23,6 +23,7 @@ public class Piece : MonoBehaviour
     float softDropTime;
     float dasChkTime;
     float arrChkTime;
+    bool isFirstMoveTriggered;
     //-----------------------INPUTS-------------------------
     [SerializeField] InputReader inputReader;
 
@@ -83,21 +84,21 @@ public class Piece : MonoBehaviour
             Rotate(1);
         }
 
-        // TODO : When Move, use DAS/ARR!
         if (moveInput.x < -0.2f)
         {
-            moveInput = new Vector2();
-            Move(Vector2Int.left);
+            MoveWithDAS(Vector2Int.left);
         }
         else if (moveInput.x > 0.2f)
         {
-            moveInput = new Vector2();
-            Move(Vector2Int.right);
+            MoveWithDAS(Vector2Int.right);
+        }
+        else
+        {
+            ResetDASDelay();
         }
 
-        else if (softDropInput)
+        if (softDropInput)
         {
-            // TODO : keep drop piece when we don't release
             SoftDrop();
         }
 
@@ -156,8 +157,43 @@ public class Piece : MonoBehaviour
         }
     }
 
+    void ResetSoftDropDelay()
+    {
+        softDropTime = 0f;
+    }
+
+    void MoveWithDAS(Vector2Int moveVec)
+    {
+        if (!isFirstMoveTriggered)
+        {
+            Move(moveVec);
+            isFirstMoveTriggered = true;
+        }
+
+        dasChkTime += Time.deltaTime;
+        if (dasChkTime >= das)
+        {
+            dasChkTime = das;
+            arrChkTime += Time.deltaTime;
+            if (arrChkTime >= arr)
+            {
+                arrChkTime = 0f;
+                Move(moveVec);
+            }
+        }
+    }
+
+    void ResetDASDelay()
+    {
+        dasChkTime = 0f;
+        arrChkTime = 0f;
+        isFirstMoveTriggered = false;
+    }
+
     void Rotate(int rotateDir)
     {
+        ResetSoftDropDelay();
+
         int originalRot = this.rotateIndex;
         rotateIndex = Wrap(rotateIndex + rotateDir, 0, 4);
 
@@ -221,6 +257,17 @@ public class Piece : MonoBehaviour
         return Wrap(wallkickIndex, 0, this.data.wallkicks.GetLength(0));
     }
 
+    void HardDrop()
+    {
+        ResetSoftDropDelay();
+
+        while (Move(Vector2Int.down))
+        {
+            continue;
+        }
+        Lock();
+    }
+
     #endregion
 
     #region Game Mechanic
@@ -280,15 +327,6 @@ public class Piece : MonoBehaviour
         board.Set(this);
         board.ClearLines();
         board.SetActivePiece();
-    }
-
-    void HardDrop()
-    {
-        while (Move(Vector2Int.down))
-        {
-            continue;
-        }
-        Lock();
     }
     #endregion
 }
