@@ -437,7 +437,6 @@ GameObject:
   m_Component:
   - component: {fileID: 223785492}
   - component: {fileID: 223785491}
-  - component: {fileID: 223785490}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -445,26 +444,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &223785490
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 223785489}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
 --- !u!114 &223785491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1723,7 +1702,6 @@ MonoBehaviour:
     image: {fileID: 457428653}
   - minoType: 6
     image: {fileID: 2035110455}
-  board: {fileID: 1716189037}
   currentImage: {fileID: 125367183}
 --- !u!1 &607029541
 GameObject:
@@ -1949,7 +1927,6 @@ MonoBehaviour:
     image: {fileID: 520908074}
   - minoType: 6
     image: {fileID: 901643089}
-  board: {fileID: 1716189037}
   currentImage: {fileID: 648643879}
 --- !u!1 &692649521
 GameObject:
@@ -3328,7 +3305,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tile: {fileID: 11400000, guid: 20b7b6d3ae8763b4ab9b411140e774ba, type: 2}
-  board: {fileID: 1716189037}
   activePiece: {fileID: 1716189038}
 --- !u!1 &1315335120
 GameObject:
@@ -3796,7 +3772,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ea9c998aaa2b0e4995a3e5f8ab0a440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  board: {fileID: 1716189037}
   holdMino: {fileID: 2127184065}
 --- !u!114 &1488253819
 MonoBehaviour:
@@ -4124,7 +4099,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7471752611b559147aa99495ac7f6504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  board: {fileID: 1716189037}
   nextsArr:
   - {fileID: 2079642279}
   - {fileID: 585081967}
@@ -4676,7 +4650,6 @@ MonoBehaviour:
     image: {fileID: 1268195082}
   - minoType: 6
     image: {fileID: 692649523}
-  board: {fileID: 1716189037}
   currentImage: {fileID: 1588310157}
 --- !u!1 &1873465085
 GameObject:
@@ -5098,7 +5071,6 @@ MonoBehaviour:
     image: {fileID: 1315335122}
   - minoType: 6
     image: {fileID: 508669600}
-  board: {fileID: 1716189037}
   currentImage: {fileID: 288695384}
 --- !u!1 &2079642277
 GameObject:
@@ -5172,7 +5144,6 @@ MonoBehaviour:
     image: {fileID: 1173266255}
   - minoType: 6
     image: {fileID: 1136494361}
-  board: {fileID: 1716189037}
   currentImage: {fileID: 204364329}
 --- !u!1 &2101488962
 GameObject:
@@ -5398,5 +5369,4 @@ MonoBehaviour:
     image: {fileID: 389619738}
   - minoType: 6
     image: {fileID: 717456752}
-  board: {fileID: 1716189037}
   currentImage: {fileID: 268769961}
