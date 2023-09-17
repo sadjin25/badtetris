@@ -199,7 +199,7 @@ public class Piece : MonoBehaviour
 
         ApplyRotation(rotateDir);
 
-        if (!WallKicks(rotateIndex, rotateDir))
+        if (!WallKickTest(rotateIndex, rotateDir))
         {
             this.rotateIndex = originalRot;
             ApplyRotation(-rotateDir);
@@ -231,7 +231,7 @@ public class Piece : MonoBehaviour
         }
     }
 
-    bool WallKicks(int rotateIndex, int rotateDir)
+    bool WallKickTest(int rotateIndex, int rotateDir)
     {
         int wallkickIndex = GetWallKickIndex(rotateIndex, rotateDir);
         for (int i = 0; i < this.data.wallkicks.GetLength(1); i++)
