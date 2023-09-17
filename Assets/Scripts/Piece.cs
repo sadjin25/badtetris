@@ -11,12 +11,18 @@ public class Piece : MonoBehaviour
     public MinoData data { get; private set; }
     public int rotateIndex { get; private set; }
 
-    //--------------------DOWNSTEP TIMES----------------
+    //--------------------Move Variables----------------
     [SerializeField] float stepDelay = 1f;
     [SerializeField] float lockDelay = .5f;
+    [SerializeField] float softDropDelay = .15f;
+    [SerializeField] float das = .15f;
+    [SerializeField] float arr = 0f;
 
     float stepTime;
     float lockTime;
+    float softDropTime;
+    float dasChkTime;
+    float arrChkTime;
     //-----------------------INPUTS-------------------------
     [SerializeField] InputReader inputReader;
 
@@ -91,8 +97,8 @@ public class Piece : MonoBehaviour
 
         else if (softDropInput)
         {
-            softDropInput = false;
-            Move(Vector2Int.down);
+            // TODO : keep drop piece when we don't release
+            SoftDrop();
         }
 
         else if (hardDropInput)
@@ -110,9 +116,16 @@ public class Piece : MonoBehaviour
 
     void OnHardDrop() => hardDropInput = true;
 
-    void OnSoftDrop() => softDropInput = true;
+    void OnSoftDrop()
+    {
+        softDropInput = true;
 
-    void OnSoftDropCancel() => softDropInput = false;
+    }
+
+    void OnSoftDropCancel()
+    {
+        softDropInput = false;
+    }
 
     void OnRotateL() => rotateLInput = true;
 
@@ -133,6 +146,15 @@ public class Piece : MonoBehaviour
         return valid;
     }
 
+    void SoftDrop()
+    {
+        softDropTime += Time.deltaTime;
+        if (softDropTime >= softDropDelay)
+        {
+            softDropTime = 0f;
+            Move(Vector2Int.down);
+        }
+    }
 
     void Rotate(int rotateDir)
     {
