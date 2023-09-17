@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.Events;       // for unityaction
 
 public class Board : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class Board : MonoBehaviour
 
     MinoData holdPieceData;
     bool isHoldUsed;
+
+    public UnityAction<MinoData> HoldEvent = delegate { };
 
     List<Piece> nextMinoes;         // Why List? => Add/Remove is easy.
     public static int maxNextNum { get { return 5; } }
@@ -85,6 +88,8 @@ public class Board : MonoBehaviour
             activePiece.Init(this, spawnPos, holdPieceData);
             holdPieceData = activePieceDataCpy;
         }
+
+        HoldEvent?.Invoke(holdPieceData);
     }
 
     public void ActivateHold()

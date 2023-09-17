@@ -11,7 +11,7 @@ public class NextUIManager : MonoBehaviour
     [SerializeField] Board board;
     List<Image> baseImages;
 
-    [SerializeField] NextMino[] nextsArr;
+    [SerializeField] MinoUI[] nextsArr;
 
     void Awake()
     {
