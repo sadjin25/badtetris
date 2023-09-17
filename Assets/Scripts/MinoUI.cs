@@ -11,7 +11,7 @@ public struct MinoImageSet
     public Image image;
 }
 
-public class NextMino : MonoBehaviour
+public class MinoUI : MonoBehaviour
 {
     [SerializeField] MinoImageSet[] baseImages;     // ORDER : IOTLJSZ
     [SerializeField] Board board;
