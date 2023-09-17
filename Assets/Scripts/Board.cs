@@ -11,13 +11,18 @@ public class Board : MonoBehaviour
     [SerializeField] MinoData[] baseMinoes;
     [SerializeField] Vector3Int spawnPos;
 
+    MinoData holdPieceData;
+    bool isHoldUsed;
+
     List<Piece> nextMinoes;         // Why List? => Add/Remove is easy.
     public static int maxNextNum { get { return 5; } }
+
     public event EventHandler<OnNextMinoChangedArgs> OnNextMinoChanged;
     public class OnNextMinoChangedArgs : EventArgs
     {
         public List<Piece> nextMinoes;
     }
+
     public event EventHandler<OnActiveMinoChangedArgs> OnActiveMinoChanged;
     public class OnActiveMinoChangedArgs : EventArgs
     {
@@ -25,6 +30,7 @@ public class Board : MonoBehaviour
     }
 
     public readonly RectInt bounds = new RectInt(new Vector2Int(-5, -10), new Vector2Int(10, 20));
+
     void Awake()
     {
         nextMinoes = new List<Piece>();
@@ -59,6 +65,32 @@ public class Board : MonoBehaviour
     #endregion
 
     #region Basic Game Functions
+
+    public void HoldPiece()
+    {
+        if (isHoldUsed) return;
+
+        isHoldUsed = true;
+
+        if (holdPieceData.Equals(default(MinoData)))        // MinoData is struct, so it couldn't get null!
+        {
+            holdPieceData = activePiece.data;
+            activePiece.Init(this, spawnPos, nextMinoes[0].data);
+            nextMinoes.Remove(nextMinoes[0]);
+            SpawnPieces();
+        }
+        else
+        {
+            MinoData activePieceDataCpy = activePiece.data;
+            activePiece.Init(this, spawnPos, holdPieceData);
+            holdPieceData = activePieceDataCpy;
+        }
+    }
+
+    public void ActivateHold()
+    {
+        isHoldUsed = false;
+    }
 
     public void SpawnPieces()
     {

@@ -13,6 +13,7 @@ public class InputReader : DescriptionBaseSO
     public UnityAction HardDropEvent = delegate { };
     public UnityAction RotateLEvent = delegate { };
     public UnityAction RotateREvent = delegate { };
+    public UnityAction HoldEvent = delegate { };
 
     GameInput gameInput;
 
@@ -83,6 +84,14 @@ public class InputReader : DescriptionBaseSO
         if (context.performed)
         {
             RotateREvent?.Invoke();
+        }
+    }
+
+    public void OnHold(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            HoldEvent?.Invoke();
         }
     }
 }

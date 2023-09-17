@@ -71,6 +71,15 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Hold"",
+                    ""type"": ""Button"",
+                    ""id"": ""4a18ccbc-b813-4fc5-8e4f-5e3a20adaf43"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -150,6 +159,17 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""action"": ""MoveLR"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f65f7a53-0ca1-446a-bae4-424b334f2ac9"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -163,6 +183,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_Keyboard_HardDrop = m_Keyboard.FindAction("HardDrop", throwIfNotFound: true);
         m_Keyboard_RotateL = m_Keyboard.FindAction("RotateL", throwIfNotFound: true);
         m_Keyboard_RotateR = m_Keyboard.FindAction("RotateR", throwIfNotFound: true);
+        m_Keyboard_Hold = m_Keyboard.FindAction("Hold", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -229,6 +250,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Keyboard_HardDrop;
     private readonly InputAction m_Keyboard_RotateL;
     private readonly InputAction m_Keyboard_RotateR;
+    private readonly InputAction m_Keyboard_Hold;
     public struct KeyboardActions
     {
         private @GameInput m_Wrapper;
@@ -238,6 +260,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         public InputAction @HardDrop => m_Wrapper.m_Keyboard_HardDrop;
         public InputAction @RotateL => m_Wrapper.m_Keyboard_RotateL;
         public InputAction @RotateR => m_Wrapper.m_Keyboard_RotateR;
+        public InputAction @Hold => m_Wrapper.m_Keyboard_Hold;
         public InputActionMap Get() { return m_Wrapper.m_Keyboard; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -262,6 +285,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @RotateR.started += instance.OnRotateR;
             @RotateR.performed += instance.OnRotateR;
             @RotateR.canceled += instance.OnRotateR;
+            @Hold.started += instance.OnHold;
+            @Hold.performed += instance.OnHold;
+            @Hold.canceled += instance.OnHold;
         }
 
         private void UnregisterCallbacks(IKeyboardActions instance)
@@ -281,6 +307,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @RotateR.started -= instance.OnRotateR;
             @RotateR.performed -= instance.OnRotateR;
             @RotateR.canceled -= instance.OnRotateR;
+            @Hold.started -= instance.OnHold;
+            @Hold.performed -= instance.OnHold;
+            @Hold.canceled -= instance.OnHold;
         }
 
         public void RemoveCallbacks(IKeyboardActions instance)
@@ -305,5 +334,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         void OnHardDrop(InputAction.CallbackContext context);
         void OnRotateL(InputAction.CallbackContext context);
         void OnRotateR(InputAction.CallbackContext context);
+        void OnHold(InputAction.CallbackContext context);
     }
 }

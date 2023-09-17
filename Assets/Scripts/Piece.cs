@@ -34,6 +34,7 @@ public class Piece : MonoBehaviour
     bool softDropInput;
     bool rotateLInput;
     bool rotateRInput;
+    bool holdInput;
 
     void OnEnable()
     {
@@ -43,6 +44,7 @@ public class Piece : MonoBehaviour
         inputReader.MoveEvent += OnMove;
         inputReader.RotateLEvent += OnRotateL;
         inputReader.RotateREvent += OnRotateR;
+        inputReader.HoldEvent += OnHold;
     }
 
     void OnDisable()
@@ -53,6 +55,7 @@ public class Piece : MonoBehaviour
         inputReader.MoveEvent -= OnMove;
         inputReader.RotateLEvent -= OnRotateL;
         inputReader.RotateREvent -= OnRotateR;
+        inputReader.HoldEvent -= OnHold;
     }
 
     void Update()
@@ -73,6 +76,12 @@ public class Piece : MonoBehaviour
 
     void CheckInputActions()
     {
+        if (holdInput)
+        {
+            holdInput = false;
+            Hold();
+        }
+
         if (rotateLInput)
         {
             rotateLInput = false;
@@ -131,9 +140,11 @@ public class Piece : MonoBehaviour
     void OnRotateL() => rotateLInput = true;
 
     void OnRotateR() => rotateRInput = true;
+
+    void OnHold() => holdInput = true;
     #endregion
 
-    #region Move/Rotate
+    #region User Controls
     bool Move(Vector2Int moveVec)
     {
         Vector3Int newPos = this.position + (Vector3Int)moveVec;
@@ -268,6 +279,11 @@ public class Piece : MonoBehaviour
         Lock();
     }
 
+    void Hold()
+    {
+        board.HoldPiece();
+    }
+
     #endregion
 
     #region Game Mechanic
@@ -327,6 +343,7 @@ public class Piece : MonoBehaviour
         board.Set(this);
         board.ClearLines();
         board.SetActivePiece();
+        board.ActivateHold();
     }
     #endregion
 }
