@@ -6,7 +6,6 @@ using UnityEngine.Tilemaps;
 public class Ghost : MonoBehaviour
 {
     [SerializeField] Tile tile;
-    [SerializeField] Board board;
     [SerializeField] Piece activePiece;
 
     public Tilemap tilemap { get; private set; }
@@ -49,12 +48,12 @@ public class Ghost : MonoBehaviour
     {
         Vector3Int pos = this.position;
         int cur = pos.y;
-        int bottom = -board.bounds.height / 2 - 1;
-        board.Clear(activePiece);
+        int bottom = -Board.Instance.bounds.height / 2 - 1;
+        Board.Instance.Clear(activePiece);
         for (int row = cur; row >= bottom; --row)
         {
             pos.y = row;
-            if (board.IsValidPosition(activePiece, pos))
+            if (Board.Instance.IsValidPosition(activePiece, pos))
             {
                 this.position = pos;
             }
@@ -64,7 +63,7 @@ public class Ghost : MonoBehaviour
             }
         }
         // original active piece is deleted, draw it again
-        board.Set(activePiece);
+        Board.Instance.Set(activePiece);
     }
 
     void Set()

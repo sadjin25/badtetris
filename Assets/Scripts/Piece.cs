@@ -5,7 +5,6 @@ using UnityEngine.Tilemaps;
 
 public class Piece : MonoBehaviour
 {
-    public Board board { get; private set; }
     public Vector3Int position { get; private set; }
     public Vector3Int[] cells { get; private set; }
     public MinoData data { get; private set; }
@@ -60,7 +59,7 @@ public class Piece : MonoBehaviour
 
     void Update()
     {
-        board.Clear(this);
+        Board.Instance.Clear(this);
         lockTime += Time.deltaTime;
         stepTime += Time.deltaTime;
 
@@ -71,7 +70,7 @@ public class Piece : MonoBehaviour
             ResetStepTime();
             Step();
         }
-        board.Set(this);
+        Board.Instance.Set(this);
     }
 
     void CheckInputActions()
@@ -149,7 +148,7 @@ public class Piece : MonoBehaviour
     {
         Vector3Int newPos = this.position + (Vector3Int)moveVec;
 
-        bool valid = board.IsValidPosition(this, newPos);
+        bool valid = Board.Instance.IsValidPosition(this, newPos);
         if (valid)
         {
             position = newPos;
@@ -281,15 +280,14 @@ public class Piece : MonoBehaviour
 
     void Hold()
     {
-        board.HoldPiece();
+        Board.Instance.HoldPiece();
     }
 
     #endregion
 
     #region Game Mechanic
-    public void Init(Board board, Vector3Int position, MinoData data)
+    public void Init(Vector3Int position, MinoData data)
     {
-        this.board = board;
         this.position = position;
         this.data = data;
         if (this.cells == null)
@@ -340,10 +338,10 @@ public class Piece : MonoBehaviour
 
     void Lock()
     {
-        board.Set(this);
-        board.ClearLines();
-        board.SetActivePiece();
-        board.ActivateHold();
+        Board.Instance.Set(this);
+        Board.Instance.ClearLines();
+        Board.Instance.SetActivePiece();
+        Board.Instance.ActivateHold();
     }
     #endregion
 }

@@ -7,6 +7,8 @@ using UnityEngine.Events;       // for unityaction
 
 public class Board : MonoBehaviour
 {
+    public static Board Instance { get; private set; }
+
     public Tilemap tilemap { get; private set; }
     public Piece activePiece { get; private set; }
     [SerializeField] MinoData[] baseMinoes;
@@ -36,6 +38,11 @@ public class Board : MonoBehaviour
 
     void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+
         nextMinoes = new List<Piece>();
         tilemap = GetComponentInChildren<Tilemap>();
         this.activePiece = GetComponentInChildren<Piece>();
@@ -78,14 +85,14 @@ public class Board : MonoBehaviour
         if (holdPieceData.Equals(default(MinoData)))        // MinoData is struct, so it couldn't get null!
         {
             holdPieceData = activePiece.data;
-            activePiece.Init(this, spawnPos, nextMinoes[0].data);
+            activePiece.Init(spawnPos, nextMinoes[0].data);
             nextMinoes.Remove(nextMinoes[0]);
             SpawnPieces();
         }
         else
         {
             MinoData activePieceDataCpy = activePiece.data;
-            activePiece.Init(this, spawnPos, holdPieceData);
+            activePiece.Init(spawnPos, holdPieceData);
             holdPieceData = activePieceDataCpy;
         }
 
@@ -104,7 +111,7 @@ public class Board : MonoBehaviour
         int rand = UnityEngine.Random.Range(0, this.baseMinoes.Length);
         MinoData data = this.baseMinoes[rand];
         Piece newPiece = new Piece();
-        newPiece.Init(this, spawnPos, data);
+        newPiece.Init(spawnPos, data);
 
         nextMinoes.Add(newPiece);
 
@@ -120,7 +127,7 @@ public class Board : MonoBehaviour
         nextMinoes.Remove(nextMinoes[0]);
         SpawnPieces();
 
-        activePiece.Init(this, spawnPos, piece.data);
+        activePiece.Init(spawnPos, piece.data);
         if (!IsValidPosition(activePiece, spawnPos))
         {
             GameOver();

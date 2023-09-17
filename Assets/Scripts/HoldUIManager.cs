@@ -7,7 +7,6 @@ public class HoldUIManager : MonoBehaviour
 {
     public static HoldUIManager Instance { get; private set; }
 
-    [SerializeField] Board board;
     List<Image> baseImages;
 
     [SerializeField] MinoUI holdMino;
@@ -22,7 +21,7 @@ public class HoldUIManager : MonoBehaviour
 
     void Start()
     {
-        board.HoldEvent += OnHold;
+        Board.Instance.HoldEvent += OnHold;
     }
 
     void OnHold(MinoData holdMinoData)

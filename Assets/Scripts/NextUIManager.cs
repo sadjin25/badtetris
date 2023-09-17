@@ -8,7 +8,6 @@ public class NextUIManager : MonoBehaviour
 {
     public static NextUIManager Instance { get; private set; }
 
-    [SerializeField] Board board;
     List<Image> baseImages;
 
     [SerializeField] MinoUI[] nextsArr;
@@ -23,7 +22,7 @@ public class NextUIManager : MonoBehaviour
 
     void Start()
     {
-        board.OnNextMinoChanged += OnNextMinoChanged;
+        Board.Instance.OnNextMinoChanged += OnNextMinoChanged;
     }
 
     void OnNextMinoChanged(object s, Board.OnNextMinoChangedArgs e)
