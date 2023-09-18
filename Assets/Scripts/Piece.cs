@@ -209,7 +209,7 @@ public class Piece : MonoBehaviour
 
         ApplyRotation(rotateDir);
 
-        if (!WallKickTest(rotateIndex, rotateDir))
+        if (!WallKickTest(originalRot, rotateIndex, rotateDir))
         {
             this.rotateIndex = originalRot;
             ApplyRotation(-rotateDir);
@@ -241,13 +241,19 @@ public class Piece : MonoBehaviour
         }
     }
 
-    bool WallKickTest(int rotateIndex, int rotateDir)
+    void ResetRotationIndex()
     {
-        int wallkickIndex = GetWallKickIndex(rotateIndex, rotateDir);
+        rotateIndex = 0;
+    }
+
+    bool WallKickTest(int beforeRotateIndex, int afterRotateIndex, int rotateDir)
+    {
+        if (Move(Vector2Int.zero)) return true;
+
+        int wallkickIndex = GetWallKickIndex(beforeRotateIndex, afterRotateIndex, rotateDir);
         for (int i = 0; i < this.data.wallkicks.GetLength(1); i++)
         {
             Vector2Int translation = this.data.wallkicks[wallkickIndex, i];
-
             if (Move(translation))
             {
                 return true;
@@ -256,15 +262,19 @@ public class Piece : MonoBehaviour
         return false;
     }
 
-    int GetWallKickIndex(int rotateIndex, int rotateDir)
+    int GetWallKickIndex(int beforeRotateIndex, int afterRotateIndex, int rotateDir)
     {
-        int wallkickIndex = rotateIndex * 2;
-
-        if (rotateDir < 0)
+        int wallkickIndex = 0;
+        if (rotateDir > 0)
         {
-            wallkickIndex--;
+            wallkickIndex = beforeRotateIndex * 2;
         }
-        return Wrap(wallkickIndex, 0, this.data.wallkicks.GetLength(0));
+        else
+        {
+            wallkickIndex = afterRotateIndex * 2 + 1;
+        }
+
+        return wallkickIndex;
     }
 
     void HardDrop()
@@ -303,6 +313,7 @@ public class Piece : MonoBehaviour
 
     int Wrap(int target, int min, int max)
     {
+        //[min, max)
         if (target < min)
         {
             return max - 1;
@@ -342,6 +353,7 @@ public class Piece : MonoBehaviour
         Board.Instance.ClearLines();
         Board.Instance.SetActivePiece();
         Board.Instance.ActivateHold();
+        ResetRotationIndex();
     }
     #endregion
 }
