@@ -5,13 +5,15 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.Events;       // for unityaction
 
+// TODO : event to unityaction, or vise versa - why??
+// TODO : change 'Piece' naming, and don't use this in nextMinoesList - use MinoData
+
 public class Board : MonoBehaviour
 {
     public static Board Instance { get; private set; }
 
     public Tilemap tilemap { get; private set; }
     public Piece activePiece { get; private set; }
-    [SerializeField] MinoData[] baseMinoes;
     [SerializeField] Vector3Int spawnPos;
 
     MinoData holdPieceData;
@@ -46,10 +48,6 @@ public class Board : MonoBehaviour
         nextMinoes = new List<Piece>();
         tilemap = GetComponentInChildren<Tilemap>();
         this.activePiece = GetComponentInChildren<Piece>();
-        for (int i = 0; i < this.baseMinoes.Length; i++)
-        {
-            this.baseMinoes[i].Init();
-        }
     }
 
     void Start()
@@ -108,10 +106,9 @@ public class Board : MonoBehaviour
     {
         if (nextMinoes.Count >= maxNextNum) return;
 
-        int rand = UnityEngine.Random.Range(0, this.baseMinoes.Length);
-        MinoData data = this.baseMinoes[rand];
+        MinoData randMinoData = RandomGenerator.Instance.GetRandomMino();
         Piece newPiece = new Piece();
-        newPiece.Init(spawnPos, data);
+        newPiece.Init(spawnPos, randMinoData);
 
         nextMinoes.Add(newPiece);
 
