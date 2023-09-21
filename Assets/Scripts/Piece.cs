@@ -29,6 +29,7 @@ public class Piece : MonoBehaviour
     //WARNING : if some action function(rotate, harddrop.. etc) is used, then CLEAR input vars.
     //          Clearing always be performed in CheckInputActions()!
     Vector2 moveInput;
+    Vector2 bfrMoveInput;
     bool hardDropInput;
     bool softDropInput;
     bool rotateLInput;
@@ -94,15 +95,26 @@ public class Piece : MonoBehaviour
 
         if (moveInput.x < -0.2f)
         {
+            if (bfrMoveInput != moveInput)
+            {
+                ResetAllDASDelay();
+            }
+            bfrMoveInput = moveInput;
             MoveWithDAS(Vector2Int.left);
         }
         else if (moveInput.x > 0.2f)
         {
+            if (bfrMoveInput != moveInput)
+            {
+                ResetAllDASDelay();
+            }
+            bfrMoveInput = moveInput;
             MoveWithDAS(Vector2Int.right);
         }
         else
         {
-            ResetDASDelay();
+            bfrMoveInput = Vector2Int.zero;
+            ResetAllDASDelay();
         }
 
         if (softDropInput)
@@ -193,7 +205,7 @@ public class Piece : MonoBehaviour
         }
     }
 
-    void ResetDASDelay()
+    void ResetAllDASDelay()
     {
         dasChkTime = 0f;
         arrChkTime = 0f;
