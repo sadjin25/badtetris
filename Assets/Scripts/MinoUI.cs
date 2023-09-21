@@ -13,13 +13,13 @@ public struct MinoImageSet
 
 public class MinoUI : MonoBehaviour
 {
-    [SerializeField] MinoImageSet[] baseImages;     // ORDER : IOTLJSZ
-    [SerializeField] Image currentImage;
+    [SerializeField] ImageHolder baseImageHolder;     // ORDER : IOTLJSZ
+    Image currentImage;
     Mino currentPieceType;
 
     public void SetImage(Mino minoType)
     {
         currentPieceType = minoType;
-        currentImage.sprite = baseImages[(int)currentPieceType].image.sprite;
+        currentImage.sprite = baseImageHolder.sprites[(int)currentPieceType];
     }
 }

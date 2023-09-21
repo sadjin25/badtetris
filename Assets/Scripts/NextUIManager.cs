@@ -8,16 +8,12 @@ public class NextUIManager : MonoBehaviour
 {
     public static NextUIManager Instance { get; private set; }
 
-    List<Image> baseImages;
-
     [SerializeField] MinoUI[] nextsArr;
 
     void Awake()
     {
         if (Instance) Destroy(this);
         Instance = this;
-
-        baseImages = new List<Image>();
     }
 
     void Start()
