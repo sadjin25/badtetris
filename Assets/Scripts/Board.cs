@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.Events;       // for unityaction
+using Tetris.EnumTypes;
 
 // TODO : event to unityaction, or vise versa - why??
 // TODO : change 'Piece' naming, and don't use this in nextMinoesList - use MinoData

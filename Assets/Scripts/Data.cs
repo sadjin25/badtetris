@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Tetris.EnumTypes;
 
 public static class Data
 {

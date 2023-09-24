@@ -1,16 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-[System.Serializable]
-public enum ScoreType
-{
-    Tetris = 0,
-    TSpinSingle = 1,
-    TSpinDouble = 2,
-    TSpinTriple = 3,
-    B2B = 4,
-}
+using Tetris.EnumTypes;
 
 public class ScoreUIManager : MonoBehaviour
 {

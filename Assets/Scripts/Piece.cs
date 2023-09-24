@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
+using Tetris.EnumTypes;
 
 public class Piece : MonoBehaviour
 {

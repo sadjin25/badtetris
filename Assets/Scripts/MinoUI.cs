@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using Tetris.EnumTypes;
 
 [System.Serializable]
 public struct MinoImageSet
