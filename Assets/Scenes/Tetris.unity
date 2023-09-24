@@ -1867,6 +1867,7 @@ GameObject:
   - component: {fileID: 1716189035}
   - component: {fileID: 1716189037}
   - component: {fileID: 1716189038}
+  - component: {fileID: 1716189039}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -1933,6 +1934,20 @@ MonoBehaviour:
   softDropDelay: 0.025
   das: 0.2
   arr: 0
+  pieceController: {fileID: 1716189039}
+--- !u!114 &1716189039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716189034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0990c3ea8a93654b871ad214599b341, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  piece: {fileID: 1716189038}
   inputReader: {fileID: 11400000, guid: 2d94b8cd086cc3648a2b89a959a74ce3, type: 2}
 --- !u!1 &1807547269
 GameObject:

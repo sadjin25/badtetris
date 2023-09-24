@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Tetris.EnumTypes;
+using System;
 
 public class Piece : MonoBehaviour
 {
@@ -24,39 +25,11 @@ public class Piece : MonoBehaviour
     float arrChkTime;
     bool isFirstMoveTriggered;
     //-----------------------INPUTS-------------------------
-    [SerializeField] InputReader inputReader;
-
-    //WARNING : if some action function(rotate, harddrop.. etc) is used, then CLEAR input vars.
-    //          Clearing always be performed in CheckInputActions()!
-    Vector2 moveInput;
-    Vector2 bfrMoveInput;
-    bool hardDropInput;
-    bool softDropInput;
-    bool rotateLInput;
-    bool rotateRInput;
-    bool holdInput;
-
-    void OnEnable()
-    {
-        inputReader.HardDropEvent += OnHardDrop;
-        inputReader.SoftDropEvent += OnSoftDrop;
-        inputReader.SoftDropCancelEvent += OnSoftDropCancel;
-        inputReader.MoveEvent += OnMove;
-        inputReader.RotateLEvent += OnRotateL;
-        inputReader.RotateREvent += OnRotateR;
-        inputReader.HoldEvent += OnHold;
-    }
-
-    void OnDisable()
-    {
-        inputReader.HardDropEvent -= OnHardDrop;
-        inputReader.SoftDropEvent -= OnSoftDrop;
-        inputReader.SoftDropCancelEvent -= OnSoftDropCancel;
-        inputReader.MoveEvent -= OnMove;
-        inputReader.RotateLEvent -= OnRotateL;
-        inputReader.RotateREvent -= OnRotateR;
-        inputReader.HoldEvent -= OnHold;
-    }
+    [SerializeField] PieceController pieceController;
+    bool isHardDropping;
+    bool isSoftDropping;
+    RotateType rotateDir;
+    MoveLRType moveDir;
 
     void Update()
     {
@@ -64,96 +37,16 @@ public class Piece : MonoBehaviour
         lockTime += Time.deltaTime;
         stepTime += Time.deltaTime;
 
-        CheckInputActions();
+        pieceController.InputUpdate();
 
         if (stepTime >= stepDelay)
         {
             ResetStepTime();
             Step();
         }
+
         Board.Instance.Set(this);
     }
-
-    void CheckInputActions()
-    {
-        if (holdInput)
-        {
-            holdInput = false;
-            Hold();
-        }
-
-        if (rotateLInput)
-        {
-            rotateLInput = false;
-            Rotate(-1);
-        }
-        else if (rotateRInput)
-        {
-            rotateRInput = false;
-            Rotate(1);
-        }
-
-        if (moveInput.x < -0.2f)
-        {
-            if (bfrMoveInput != moveInput)
-            {
-                ResetAllDASDelay();
-            }
-            bfrMoveInput = moveInput;
-            MoveWithDAS(Vector2Int.left);
-        }
-        else if (moveInput.x > 0.2f)
-        {
-            if (bfrMoveInput != moveInput)
-            {
-                ResetAllDASDelay();
-            }
-            bfrMoveInput = moveInput;
-            MoveWithDAS(Vector2Int.right);
-        }
-        else
-        {
-            bfrMoveInput = Vector2Int.zero;
-            ResetAllDASDelay();
-        }
-
-        if (softDropInput)
-        {
-            SoftDrop();
-        }
-
-        else if (hardDropInput)
-        {
-            hardDropInput = false;
-            HardDrop();
-        }
-    }
-
-    #region Event Listeners
-    void OnMove(Vector2 input)
-    {
-        moveInput = input;
-    }
-
-    void OnHardDrop() => hardDropInput = true;
-
-    void OnSoftDrop()
-    {
-        softDropInput = true;
-
-    }
-
-    void OnSoftDropCancel()
-    {
-        softDropInput = false;
-    }
-
-    void OnRotateL() => rotateLInput = true;
-
-    void OnRotateR() => rotateRInput = true;
-
-    void OnHold() => holdInput = true;
-    #endregion
 
     #region User Controls
     bool Move(Vector2Int moveVec)
@@ -169,7 +62,7 @@ public class Piece : MonoBehaviour
         return valid;
     }
 
-    void SoftDrop()
+    public void SoftDrop()
     {
         softDropTime += Time.deltaTime;
         if (softDropTime >= softDropDelay)
@@ -184,7 +77,7 @@ public class Piece : MonoBehaviour
         softDropTime = 0f;
     }
 
-    void MoveWithDAS(Vector2Int moveVec)
+    public void MoveWithDAS(Vector2Int moveVec)
     {
         if (!isFirstMoveTriggered)
         {
@@ -205,14 +98,14 @@ public class Piece : MonoBehaviour
         }
     }
 
-    void ResetAllDASDelay()
+    public void ResetAllDASDelay()
     {
         dasChkTime = 0f;
         arrChkTime = 0f;
         isFirstMoveTriggered = false;
     }
 
-    void Rotate(int rotateDir)
+    public void Rotate(int rotateDir)
     {
         ResetSoftDropDelay();
 
@@ -289,7 +182,7 @@ public class Piece : MonoBehaviour
         return wallkickIndex;
     }
 
-    void HardDrop()
+    public void HardDrop()
     {
         ResetSoftDropDelay();
 
@@ -300,7 +193,7 @@ public class Piece : MonoBehaviour
         Lock();
     }
 
-    void Hold()
+    public void Hold()
     {
         Board.Instance.HoldPiece();
     }
