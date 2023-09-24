@@ -17,6 +17,11 @@ public class MinoUI : MonoBehaviour
     Image currentImage;
     Mino currentPieceType;
 
+    void Awake()
+    {
+        currentImage = GetComponentInChildren<Image>();
+    }
+
     public void SetImage(Mino minoType)
     {
         currentPieceType = minoType;
