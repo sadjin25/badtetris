@@ -13,7 +13,7 @@ public struct MinoImageSet
 
 public class MinoUI : MonoBehaviour
 {
-    [SerializeField] ImageHolder baseImageHolder;     // ORDER : IOTLJSZ
+    [SerializeField] ImageHolder baseImageHolder;     // MINO ORDER : IOTLJSZ, SCORE ORDER : TETRIS, TSPIN SINGLE, TSPIN DOUBLE, TSPIN TRIPLE, B2B 
     Image currentImage;
     Mino currentPieceType;
 
@@ -26,5 +26,15 @@ public class MinoUI : MonoBehaviour
     {
         currentPieceType = minoType;
         currentImage.sprite = baseImageHolder.sprites[(int)currentPieceType];
+    }
+
+    public void SetImage(ScoreType scoreType)
+    {
+        currentImage.sprite = baseImageHolder.sprites[(int)scoreType];
+    }
+
+    public void Clear()
+    {
+        currentImage.sprite = null;
     }
 }

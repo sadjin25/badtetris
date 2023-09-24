@@ -36,6 +36,8 @@ public class Board : MonoBehaviour
         public Piece activePiece;
     }
 
+    public UnityAction<ScoreType> OnScoring = delegate { };
+
     public readonly RectInt bounds = new RectInt(new Vector2Int(-5, -10), new Vector2Int(10, 20));
 
     void Awake()
@@ -175,16 +177,24 @@ public class Board : MonoBehaviour
     {
         // naive Style
         int row = bounds.yMin;
+        int lineClearInARowCnt = 0;
         while (row < bounds.yMax)
         {
             if (IsLineFull(row))
             {
                 EachLineClear(row);
                 PushLinesDown(row);
+                ++lineClearInARowCnt;
+
+                if (lineClearInARowCnt >= 4)
+                {
+                    OnScoring?.Invoke(ScoreType.Tetris);
+                }
             }
             else
             {
                 ++row;
+                lineClearInARowCnt = 0;
             }
         }
     }
