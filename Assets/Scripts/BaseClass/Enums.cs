@@ -21,5 +21,19 @@ namespace Tetris.EnumTypes
         TSpinTriple = 3,
         B2B = 4,
     }
+
+    public enum RotateType
+    {
+        None,
+        Left,
+        Right,
+    }
+
+    public enum MoveLRType
+    {
+        None,
+        Left,
+        Right,
+    }
 }
 
