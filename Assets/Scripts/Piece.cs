@@ -216,6 +216,7 @@ public class Piece : MonoBehaviour
         }
     }
 
+    // TODO : Remove this func from Piece.cs
     int Wrap(int target, int min, int max)
     {
         //[min, max)
