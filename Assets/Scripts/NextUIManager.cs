@@ -24,7 +24,7 @@ public class NextUIManager : MonoBehaviour
     {
         for (int i = 0; i < Board.maxNextNum; ++i)
         {
-            nextsArr[i].SetImage(e.nextMinoes[i].data.mino);
+            nextsArr[i].SetImage(e.nextMinoDataList[i].mino);
         }
     }
 }

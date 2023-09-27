@@ -7,7 +7,6 @@ using UnityEngine.Events;       // for unityaction
 using Tetris.EnumTypes;
 
 // TODO : event to unityaction, or vise versa - why??
-// TODO : change 'Piece' naming, and don't use this in nextMinoesList - use MinoData
 
 public class Board : MonoBehaviour
 {
@@ -22,13 +21,13 @@ public class Board : MonoBehaviour
 
     public UnityAction<MinoData> HoldEvent = delegate { };
 
-    List<Piece> nextMinoes;         // Why List? => Add/Remove is easy.
+    List<MinoData> nextMinoDataList;         // Why List? => Add/Remove is easy.
     public static int maxNextNum { get { return 5; } }
 
     public event EventHandler<OnNextMinoChangedArgs> OnNextMinoChanged;
     public class OnNextMinoChangedArgs : EventArgs
     {
-        public List<Piece> nextMinoes;
+        public List<MinoData> nextMinoDataList;
     }
 
     public event EventHandler<OnActiveMinoChangedArgs> OnActiveMinoChanged;
@@ -48,7 +47,7 @@ public class Board : MonoBehaviour
             Instance = this;
         }
 
-        nextMinoes = new List<Piece>();
+        nextMinoDataList = new List<MinoData>();
         tilemap = GetComponentInChildren<Tilemap>();
         this.activePiece = GetComponentInChildren<Piece>();
     }
@@ -71,7 +70,7 @@ public class Board : MonoBehaviour
 
     public int GetCurrentNextSize()
     {
-        return nextMinoes.Count;
+        return nextMinoDataList.Count;
     }
     #endregion
 
@@ -86,8 +85,8 @@ public class Board : MonoBehaviour
         if (holdPieceData.Equals(default(MinoData)))        // MinoData is struct, so it couldn't get null!
         {
             holdPieceData = activePiece.data;
-            activePiece.Init(spawnPos, nextMinoes[0].data);
-            nextMinoes.Remove(nextMinoes[0]);
+            activePiece.Init(spawnPos, nextMinoDataList[0]);
+            nextMinoDataList.Remove(nextMinoDataList[0]);
             SpawnPieces();
         }
         else
@@ -107,27 +106,27 @@ public class Board : MonoBehaviour
 
     public void SpawnPieces()
     {
-        if (nextMinoes.Count >= maxNextNum) return;
+        if (nextMinoDataList.Count >= maxNextNum) return;
 
         MinoData randMinoData = RandomGenerator.Instance.GetRandomMino();
         Piece newPiece = new Piece();
         newPiece.Init(spawnPos, randMinoData);
 
-        nextMinoes.Add(newPiece);
+        nextMinoDataList.Add(newPiece.data);
 
         if (GetCurrentNextSize() >= maxNextNum)
         {
-            OnNextMinoChanged?.Invoke(this, new OnNextMinoChangedArgs { nextMinoes = this.nextMinoes });
+            OnNextMinoChanged?.Invoke(this, new OnNextMinoChangedArgs { nextMinoDataList = this.nextMinoDataList });
         }
     }
 
     public void SetActivePiece()
     {
-        Piece piece = nextMinoes[0];
-        nextMinoes.Remove(nextMinoes[0]);
+        MinoData nextPieceData = nextMinoDataList[0];
+        nextMinoDataList.Remove(nextMinoDataList[0]);
         SpawnPieces();
 
-        activePiece.Init(spawnPos, piece.data);
+        activePiece.Init(spawnPos, nextPieceData);
         if (!IsValidPosition(activePiece, spawnPos))
         {
             GameOver();
