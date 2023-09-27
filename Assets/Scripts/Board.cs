@@ -62,18 +62,6 @@ public class Board : MonoBehaviour
         SetActivePiece();
     }
 
-    #region Getter/Setter
-    public Mino GetCurrentMinoType()
-    {
-        return activePiece.data.mino;
-    }
-
-    public int GetCurrentNextSize()
-    {
-        return nextMinoDataList.Count;
-    }
-    #endregion
-
     #region Basic Game Functions
 
     public void HoldPiece()
@@ -112,7 +100,7 @@ public class Board : MonoBehaviour
 
         nextMinoDataList.Add(randMinoData);
 
-        if (GetCurrentNextSize() >= maxNextNum)
+        if (nextMinoDataList.Count >= maxNextNum)
         {
             OnNextMinoChanged?.Invoke(this, new OnNextMinoChangedArgs { nextMinoDataList = this.nextMinoDataList });
         }
