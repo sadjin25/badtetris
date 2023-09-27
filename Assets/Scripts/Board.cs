@@ -108,11 +108,9 @@ public class Board : MonoBehaviour
     {
         if (nextMinoDataList.Count >= maxNextNum) return;
 
-        MinoData randMinoData = RandomGenerator.Instance.GetRandomMino();
-        Piece newPiece = new Piece();
-        newPiece.Init(spawnPos, randMinoData);
+        MinoData randMinoData = RandomGenerator.Instance.GetRandomMinoData();
 
-        nextMinoDataList.Add(newPiece.data);
+        nextMinoDataList.Add(randMinoData);
 
         if (GetCurrentNextSize() >= maxNextNum)
         {

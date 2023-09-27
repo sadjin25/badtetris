@@ -27,7 +27,7 @@ public class RandomGenerator : MonoBehaviour
     }
 
     // Return Random MinoData by following 7-bag system  
-    public MinoData GetRandomMino()
+    public MinoData GetRandomMinoData()
     {
         if (usedPieceNum >= MAX_PIECE_NUM)
         {
