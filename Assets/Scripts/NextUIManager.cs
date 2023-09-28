@@ -9,6 +9,16 @@ public class NextUIManager : MonoBehaviour
 
     [SerializeField] MinoUI[] _nextsArr;
 
+    void OnEnable()
+    {
+        GameEventManager.OnNextMinoChanged += OnNextMinoChanged;
+    }
+
+    void OnDisable()
+    {
+        GameEventManager.OnNextMinoChanged -= OnNextMinoChanged;
+    }
+
     void Awake()
     {
         if (Instance) Destroy(this);

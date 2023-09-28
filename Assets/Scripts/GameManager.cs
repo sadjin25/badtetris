@@ -31,9 +31,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        NextUIManager.Instance.NextUIInit();
-        HoldUIManager.Instance.HoldUIInit();
-        ScoreUIManager.Instance.ScoreUIInit();
         GameStart();
     }
 
@@ -114,6 +111,7 @@ public class GameManager : MonoBehaviour
         }
         Set(_activePiece);
 
+        // REMOVEREMOVE
         GameEventManager.Instance.InvokeActiveMinoChangedEvent(_activePiece);
     }
 

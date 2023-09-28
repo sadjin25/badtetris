@@ -11,17 +11,22 @@ public class HoldUIManager : MonoBehaviour
 
     [SerializeField] MinoUI _holdMino;
 
+    void OnEnable()
+    {
+        GameEventManager.OnHold += OnHold;
+    }
+
+    void OnDisable()
+    {
+        GameEventManager.OnHold -= OnHold;
+    }
+
     void Awake()
     {
         if (Instance) Destroy(this);
         Instance = this;
 
         _baseImages = new List<Image>();
-    }
-
-    public void HoldUIInit()
-    {
-        GameEventManager.HoldEvent += OnHold;
     }
 
     void OnHold(object s, GameEventManager.OnHoldArgs e)

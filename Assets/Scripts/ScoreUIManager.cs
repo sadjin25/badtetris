@@ -9,15 +9,20 @@ public class ScoreUIManager : MonoBehaviour
 
     [SerializeField] MinoUI _scoreUI;
 
+    void OnEnable()
+    {
+        GameEventManager.OnScoring += OnScoring;
+    }
+
+    void OnDisable()
+    {
+        GameEventManager.OnScoring -= OnScoring;
+    }
+
     void Awake()
     {
         if (Instance) Destroy(this);
         Instance = this;
-    }
-
-    public void ScoreUIInit()
-    {
-        GameEventManager.OnScoring += OnScoring;
     }
 
     void OnScoring(object s, GameEventManager.OnScoringArgs e)
