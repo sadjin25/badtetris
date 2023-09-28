@@ -17,10 +17,10 @@ public class NextUIManager : MonoBehaviour
 
     public void NextUIInit()
     {
-        GameManager.OnNextMinoChanged += OnNextMinoChanged;
+        GameEventManager.OnNextMinoChanged += OnNextMinoChanged;
     }
 
-    void OnNextMinoChanged(object s, GameManager.OnNextMinoChangedArgs e)
+    void OnNextMinoChanged(object s, GameEventManager.OnNextMinoChangedArgs e)
     {
         for (int i = 0; i < GameManager.maxNextNum; ++i)
         {

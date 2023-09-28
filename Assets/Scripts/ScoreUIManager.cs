@@ -17,10 +17,10 @@ public class ScoreUIManager : MonoBehaviour
 
     public void ScoreUIInit()
     {
-        GameManager.OnScoring += OnScoring;
+        GameEventManager.OnScoring += OnScoring;
     }
 
-    void OnScoring(object s, GameManager.OnScoringArgs e)
+    void OnScoring(object s, GameEventManager.OnScoringArgs e)
     {
         StartCoroutine(ShowingScoreCoroutine(e.scoreType));
     }

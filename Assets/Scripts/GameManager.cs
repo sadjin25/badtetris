@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Tetris.EnumTypes;
-using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,32 +16,8 @@ public class GameManager : MonoBehaviour
     MinoData holdPieceData;
     bool isHoldUsed;
 
-    public static event EventHandler<OnHoldArgs> HoldEvent;
-    public class OnHoldArgs : EventArgs
-    {
-        public MinoData holdPieceData;
-    }
-
     List<MinoData> nextMinoDataList;         // Why List? => Add/Remove is easy.
     public static int maxNextNum { get { return 5; } }
-
-    public static event EventHandler<OnNextMinoChangedArgs> OnNextMinoChanged;
-    public class OnNextMinoChangedArgs : EventArgs
-    {
-        public List<MinoData> nextMinoDataList;
-    }
-
-    public static event EventHandler<OnActiveMinoChangedArgs> OnActiveMinoChanged;
-    public class OnActiveMinoChangedArgs : EventArgs
-    {
-        public Piece activePiece;
-    }
-
-    public static event EventHandler<OnScoringArgs> OnScoring;
-    public class OnScoringArgs : EventArgs
-    {
-        public ScoreType scoreType;
-    }
 
     void Awake()
     {
@@ -103,7 +78,7 @@ public class GameManager : MonoBehaviour
             holdPieceData = activePieceDataCpy;
         }
 
-        HoldEvent?.Invoke(this, new OnHoldArgs { holdPieceData = holdPieceData });
+        GameEventManager.Instance.InvokeHoldEvent(holdPieceData);
     }
 
     public void ActivateHold()
@@ -121,7 +96,7 @@ public class GameManager : MonoBehaviour
 
         if (nextMinoDataList.Count >= maxNextNum)
         {
-            OnNextMinoChanged?.Invoke(this, new OnNextMinoChangedArgs { nextMinoDataList = this.nextMinoDataList });
+            GameEventManager.Instance.InvokeNextMinoChangedEvent(nextMinoDataList);
         }
     }
 
@@ -138,7 +113,7 @@ public class GameManager : MonoBehaviour
         }
         Set(activePiece);
 
-        OnActiveMinoChanged?.Invoke(this, new OnActiveMinoChangedArgs { activePiece = activePiece });
+        GameEventManager.Instance.InvokeActiveMinoChangedEvent(activePiece);
     }
 
     public bool IsValidPosition(Piece piece, Vector3Int position)
@@ -175,7 +150,7 @@ public class GameManager : MonoBehaviour
 
                 if (lineClearInARowCnt >= 4)
                 {
-                    OnScoring?.Invoke(this, new OnScoringArgs { scoreType = ScoreType.Tetris });
+                    GameEventManager.Instance.InvokeScoringEvent(ScoreType.Tetris);
                 }
             }
             else
