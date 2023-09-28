@@ -9,7 +9,7 @@ public class GameEventManager : MonoBehaviour
 {
     public static GameEventManager Instance { get; private set; }
 
-    public static event EventHandler<OnHoldArgs> HoldEvent;
+    public static event EventHandler<OnHoldArgs> OnHold;
     public class OnHoldArgs : EventArgs
     {
         public MinoData holdPieceData;
@@ -41,7 +41,7 @@ public class GameEventManager : MonoBehaviour
 
     public void InvokeHoldEvent(MinoData holdPieceData)
     {
-        HoldEvent?.Invoke(this, new OnHoldArgs { holdPieceData = holdPieceData });
+        OnHold?.Invoke(this, new OnHoldArgs { holdPieceData = holdPieceData });
     }
 
     public void InvokeNextMinoChangedEvent(List<MinoData> nextMinoDataList)
