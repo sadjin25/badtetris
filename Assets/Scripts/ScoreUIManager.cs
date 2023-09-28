@@ -17,13 +17,14 @@ public class ScoreUIManager : MonoBehaviour
 
     public void ScoreUIInit()
     {
-        GameManager.Instance.OnScoring += OnScoring;
+        GameManager.OnScoring += OnScoring;
     }
 
-    void OnScoring(ScoreType scoreType)
+    void OnScoring(object s, GameManager.OnScoringArgs e)
     {
-        StartCoroutine(ShowingScoreCoroutine(scoreType));
+        StartCoroutine(ShowingScoreCoroutine(e.scoreType));
     }
+
     IEnumerator ShowingScoreCoroutine(ScoreType scoreType)
     {
         scoreUI.SetImage(scoreType);

@@ -1,11 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;       // for unityaction
 using Tetris.EnumTypes;
 using System;
-
-// TODO : event to unityaction, or vise versa - why??
 
 public class GameManager : MonoBehaviour
 {
@@ -20,24 +17,32 @@ public class GameManager : MonoBehaviour
     MinoData holdPieceData;
     bool isHoldUsed;
 
-    public UnityAction<MinoData> HoldEvent = delegate { };
+    public static event EventHandler<OnHoldArgs> HoldEvent;
+    public class OnHoldArgs : EventArgs
+    {
+        public MinoData holdPieceData;
+    }
 
     List<MinoData> nextMinoDataList;         // Why List? => Add/Remove is easy.
     public static int maxNextNum { get { return 5; } }
 
-    public event EventHandler<OnNextMinoChangedArgs> OnNextMinoChanged;
+    public static event EventHandler<OnNextMinoChangedArgs> OnNextMinoChanged;
     public class OnNextMinoChangedArgs : EventArgs
     {
         public List<MinoData> nextMinoDataList;
     }
 
-    public event EventHandler<OnActiveMinoChangedArgs> OnActiveMinoChanged;
+    public static event EventHandler<OnActiveMinoChangedArgs> OnActiveMinoChanged;
     public class OnActiveMinoChangedArgs : EventArgs
     {
         public Piece activePiece;
     }
 
-    public UnityAction<ScoreType> OnScoring = delegate { };
+    public static event EventHandler<OnScoringArgs> OnScoring;
+    public class OnScoringArgs : EventArgs
+    {
+        public ScoreType scoreType;
+    }
 
     void Awake()
     {
@@ -98,7 +103,7 @@ public class GameManager : MonoBehaviour
             holdPieceData = activePieceDataCpy;
         }
 
-        HoldEvent?.Invoke(holdPieceData);
+        HoldEvent?.Invoke(this, new OnHoldArgs { holdPieceData = holdPieceData });
     }
 
     public void ActivateHold()
@@ -170,7 +175,7 @@ public class GameManager : MonoBehaviour
 
                 if (lineClearInARowCnt >= 4)
                 {
-                    OnScoring?.Invoke(ScoreType.Tetris);
+                    OnScoring?.Invoke(this, new OnScoringArgs { scoreType = ScoreType.Tetris });
                 }
             }
             else

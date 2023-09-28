@@ -21,11 +21,11 @@ public class HoldUIManager : MonoBehaviour
 
     public void HoldUIInit()
     {
-        GameManager.Instance.HoldEvent += OnHold;
+        GameManager.HoldEvent += OnHold;
     }
 
-    void OnHold(MinoData holdMinoData)
+    void OnHold(object s, GameManager.OnHoldArgs e)
     {
-        holdMino.SetImage(holdMinoData.mino);
+        holdMino.SetImage(e.holdPieceData.mino);
     }
 }

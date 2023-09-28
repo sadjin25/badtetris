@@ -17,7 +17,7 @@ public class NextUIManager : MonoBehaviour
 
     public void NextUIInit()
     {
-        GameManager.Instance.OnNextMinoChanged += OnNextMinoChanged;
+        GameManager.OnNextMinoChanged += OnNextMinoChanged;
     }
 
     void OnNextMinoChanged(object s, GameManager.OnNextMinoChangedArgs e)
