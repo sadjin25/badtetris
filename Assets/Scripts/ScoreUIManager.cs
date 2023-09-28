@@ -15,9 +15,9 @@ public class ScoreUIManager : MonoBehaviour
         Instance = this;
     }
 
-    void Start()
+    public void ScoreUIInit()
     {
-        Board.Instance.OnScoring += OnScoring;
+        GameManager.Instance.OnScoring += OnScoring;
     }
 
     void OnScoring(ScoreType scoreType)

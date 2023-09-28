@@ -48,12 +48,12 @@ public class Ghost : MonoBehaviour
     {
         Vector3Int pos = this.position;
         int cur = pos.y;
-        int bottom = -Board.Instance.bounds.height / 2 - 1;
-        Board.Instance.Clear(activePiece);
+        int bottom = -GameManager.Instance.bounds.height / 2 - 1;
+        GameManager.Instance.Clear(activePiece);
         for (int row = cur; row >= bottom; --row)
         {
             pos.y = row;
-            if (Board.Instance.IsValidPosition(activePiece, pos))
+            if (GameManager.Instance.IsValidPosition(activePiece, pos))
             {
                 this.position = pos;
             }
@@ -63,7 +63,7 @@ public class Ghost : MonoBehaviour
             }
         }
         // original active piece is deleted, draw it again
-        Board.Instance.Set(activePiece);
+        GameManager.Instance.Set(activePiece);
     }
 
     void Set()

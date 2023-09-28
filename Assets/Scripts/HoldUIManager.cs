@@ -19,9 +19,9 @@ public class HoldUIManager : MonoBehaviour
         baseImages = new List<Image>();
     }
 
-    void Start()
+    public void HoldUIInit()
     {
-        Board.Instance.HoldEvent += OnHold;
+        GameManager.Instance.HoldEvent += OnHold;
     }
 
     void OnHold(MinoData holdMinoData)

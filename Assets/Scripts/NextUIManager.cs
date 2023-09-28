@@ -15,14 +15,14 @@ public class NextUIManager : MonoBehaviour
         Instance = this;
     }
 
-    void Start()
+    public void NextUIInit()
     {
-        Board.Instance.OnNextMinoChanged += OnNextMinoChanged;
+        GameManager.Instance.OnNextMinoChanged += OnNextMinoChanged;
     }
 
-    void OnNextMinoChanged(object s, Board.OnNextMinoChangedArgs e)
+    void OnNextMinoChanged(object s, GameManager.OnNextMinoChangedArgs e)
     {
-        for (int i = 0; i < Board.maxNextNum; ++i)
+        for (int i = 0; i < GameManager.maxNextNum; ++i)
         {
             nextsArr[i].SetImage(e.nextMinoDataList[i].mino);
         }

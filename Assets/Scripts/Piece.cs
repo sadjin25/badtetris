@@ -33,7 +33,7 @@ public class Piece : MonoBehaviour
 
     void Update()
     {
-        Board.Instance.Clear(this);
+        GameManager.Instance.Clear(this);
         lockTime += Time.deltaTime;
         stepTime += Time.deltaTime;
 
@@ -45,7 +45,7 @@ public class Piece : MonoBehaviour
             Step();
         }
 
-        Board.Instance.Set(this);
+        GameManager.Instance.Set(this);
     }
 
     #region User Controls
@@ -53,7 +53,7 @@ public class Piece : MonoBehaviour
     {
         Vector3Int newPos = this.position + (Vector3Int)moveVec;
 
-        bool valid = Board.Instance.IsValidPosition(this, newPos);
+        bool valid = GameManager.Instance.IsValidPosition(this, newPos);
         if (valid)
         {
             position = newPos;
@@ -195,7 +195,7 @@ public class Piece : MonoBehaviour
 
     public void Hold()
     {
-        Board.Instance.HoldPiece();
+        GameManager.Instance.HoldPiece();
     }
 
     #endregion
@@ -255,10 +255,10 @@ public class Piece : MonoBehaviour
 
     void Lock()
     {
-        Board.Instance.Set(this);
-        Board.Instance.ClearLines();
-        Board.Instance.SetActivePiece();
-        Board.Instance.ActivateHold();
+        GameManager.Instance.Set(this);
+        GameManager.Instance.ClearLines();
+        GameManager.Instance.SetActivePiece();
+        GameManager.Instance.ActivateHold();
         ResetRotationIndex();
     }
     #endregion
