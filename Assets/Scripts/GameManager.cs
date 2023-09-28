@@ -110,9 +110,6 @@ public class GameManager : MonoBehaviour
             GameOver();
         }
         Set(_activePiece);
-
-        // REMOVEREMOVE
-        GameEventManager.Instance.InvokeActiveMinoChangedEvent(_activePiece);
     }
 
     public bool IsValidPosition(Piece piece, Vector3Int position)

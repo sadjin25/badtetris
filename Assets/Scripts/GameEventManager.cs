@@ -21,12 +21,6 @@ public class GameEventManager : MonoBehaviour
         public List<MinoData> nextMinoDataList;
     }
 
-    public static event EventHandler<OnActiveMinoChangedArgs> OnActiveMinoChanged;
-    public class OnActiveMinoChangedArgs : EventArgs
-    {
-        public Piece activePiece;
-    }
-
     public static event EventHandler<OnScoringArgs> OnScoring;
     public class OnScoringArgs : EventArgs
     {
@@ -52,10 +46,5 @@ public class GameEventManager : MonoBehaviour
     public void InvokeScoringEvent(ScoreType scoreType)
     {
         OnScoring?.Invoke(this, new OnScoringArgs { scoreType = scoreType });
-    }
-
-    public void InvokeActiveMinoChangedEvent(Piece activePiece)
-    {
-        OnActiveMinoChanged?.Invoke(this, new OnActiveMinoChangedArgs { activePiece = activePiece });
     }
 }
