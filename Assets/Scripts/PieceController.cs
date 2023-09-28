@@ -4,120 +4,120 @@ using UnityEngine;
 
 public class PieceController : MonoBehaviour
 {
-    [SerializeField] Piece piece;
+    [SerializeField] Piece _piece;
 
-    [SerializeField] InputReader inputReader;
+    [SerializeField] InputReader _inputReader;
 
     //WARNING : if some action function(rotate, harddrop.. etc) is used, then CLEAR input vars.
     //          Clearing always be performed in Input checking update func!
-    Vector2 moveInput;
-    Vector2 bfrMoveInput;
-    bool hardDropInput;
-    bool softDropInput;
-    bool rotateLInput;
-    bool rotateRInput;
-    bool holdInput;
+    Vector2 _moveInput;
+    Vector2 _bfrMoveInput;
+    bool _hardDropInput;
+    bool _softDropInput;
+    bool _rotateLInput;
+    bool _rotateRInput;
+    bool _holdInput;
 
     void OnEnable()
     {
-        inputReader.HardDropEvent += OnHardDrop;
-        inputReader.SoftDropEvent += OnSoftDrop;
-        inputReader.SoftDropCancelEvent += OnSoftDropCancel;
-        inputReader.MoveEvent += OnMove;
-        inputReader.RotateLEvent += OnRotateL;
-        inputReader.RotateREvent += OnRotateR;
-        inputReader.HoldEvent += OnHold;
+        _inputReader.HardDropEvent += OnHardDrop;
+        _inputReader.SoftDropEvent += OnSoftDrop;
+        _inputReader.SoftDropCancelEvent += OnSoftDropCancel;
+        _inputReader.MoveEvent += OnMove;
+        _inputReader.RotateLEvent += OnRotateL;
+        _inputReader.RotateREvent += OnRotateR;
+        _inputReader.HoldEvent += OnHold;
     }
 
     void OnDisable()
     {
-        inputReader.HardDropEvent -= OnHardDrop;
-        inputReader.SoftDropEvent -= OnSoftDrop;
-        inputReader.SoftDropCancelEvent -= OnSoftDropCancel;
-        inputReader.MoveEvent -= OnMove;
-        inputReader.RotateLEvent -= OnRotateL;
-        inputReader.RotateREvent -= OnRotateR;
-        inputReader.HoldEvent -= OnHold;
+        _inputReader.HardDropEvent -= OnHardDrop;
+        _inputReader.SoftDropEvent -= OnSoftDrop;
+        _inputReader.SoftDropCancelEvent -= OnSoftDropCancel;
+        _inputReader.MoveEvent -= OnMove;
+        _inputReader.RotateLEvent -= OnRotateL;
+        _inputReader.RotateREvent -= OnRotateR;
+        _inputReader.HoldEvent -= OnHold;
     }
 
     public void InputUpdate()
     {
-        if (holdInput)
+        if (_holdInput)
         {
-            holdInput = false;
-            piece.Hold();
+            _holdInput = false;
+            _piece.Hold();
         }
 
-        if (rotateLInput)
+        if (_rotateLInput)
         {
-            rotateLInput = false;
-            piece.Rotate(-1);
+            _rotateLInput = false;
+            _piece.Rotate(-1);
         }
-        else if (rotateRInput)
+        else if (_rotateRInput)
         {
-            rotateRInput = false;
-            piece.Rotate(1);
+            _rotateRInput = false;
+            _piece.Rotate(1);
         }
 
-        if (moveInput.x < -0.2f)
+        if (_moveInput.x < -0.2f)
         {
-            if (bfrMoveInput != moveInput)
+            if (_bfrMoveInput != _moveInput)
             {
-                piece.ResetAllDASDelay();
+                _piece.ResetAllDASDelay();
             }
-            bfrMoveInput = moveInput;
-            piece.MoveWithDAS(Vector2Int.left);
+            _bfrMoveInput = _moveInput;
+            _piece.MoveWithDAS(Vector2Int.left);
         }
-        else if (moveInput.x > 0.2f)
+        else if (_moveInput.x > 0.2f)
         {
-            if (bfrMoveInput != moveInput)
+            if (_bfrMoveInput != _moveInput)
             {
-                piece.ResetAllDASDelay();
+                _piece.ResetAllDASDelay();
             }
-            bfrMoveInput = moveInput;
-            piece.MoveWithDAS(Vector2Int.right);
+            _bfrMoveInput = _moveInput;
+            _piece.MoveWithDAS(Vector2Int.right);
         }
         else
         {
-            bfrMoveInput = Vector2Int.zero;
-            piece.ResetAllDASDelay();
+            _bfrMoveInput = Vector2Int.zero;
+            _piece.ResetAllDASDelay();
         }
 
-        if (softDropInput)
+        if (_softDropInput)
         {
-            piece.SoftDrop();
+            _piece.SoftDrop();
         }
 
-        else if (hardDropInput)
+        else if (_hardDropInput)
         {
-            hardDropInput = false;
-            piece.HardDrop();
+            _hardDropInput = false;
+            _piece.HardDrop();
         }
     }
 
     #region Event Listeners
     void OnMove(Vector2 input)
     {
-        moveInput = input;
+        _moveInput = input;
     }
 
-    void OnHardDrop() => hardDropInput = true;
+    void OnHardDrop() => _hardDropInput = true;
 
     void OnSoftDrop()
     {
-        softDropInput = true;
+        _softDropInput = true;
 
     }
 
     void OnSoftDropCancel()
     {
-        softDropInput = false;
+        _softDropInput = false;
     }
 
-    void OnRotateL() => rotateLInput = true;
+    void OnRotateL() => _rotateLInput = true;
 
-    void OnRotateR() => rotateRInput = true;
+    void OnRotateR() => _rotateRInput = true;
 
-    void OnHold() => holdInput = true;
+    void OnHold() => _holdInput = true;
     #endregion
 }

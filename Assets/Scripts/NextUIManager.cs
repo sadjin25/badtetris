@@ -7,7 +7,7 @@ public class NextUIManager : MonoBehaviour
 {
     public static NextUIManager Instance { get; private set; }
 
-    [SerializeField] MinoUI[] nextsArr;
+    [SerializeField] MinoUI[] _nextsArr;
 
     void Awake()
     {
@@ -22,9 +22,9 @@ public class NextUIManager : MonoBehaviour
 
     void OnNextMinoChanged(object s, GameEventManager.OnNextMinoChangedArgs e)
     {
-        for (int i = 0; i < GameManager.maxNextNum; ++i)
+        for (int i = 0; i < GameManager._maxNextNum; ++i)
         {
-            nextsArr[i].SetImage(e.nextMinoDataList[i].mino);
+            _nextsArr[i].SetImage(e.nextMinoDataList[i]._mino);
         }
     }
 }

@@ -8,25 +8,25 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    [SerializeField] Board board;
-    public readonly RectInt bounds = new RectInt(new Vector2Int(-5, -10), new Vector2Int(10, 20));
+    [SerializeField] Board _board;
+    public readonly RectInt _bounds = new RectInt(new Vector2Int(-5, -10), new Vector2Int(10, 20));
 
-    public Piece activePiece { get; private set; }
-    [SerializeField] Vector3Int spawnPos;
+    public Piece _activePiece { get; private set; }
+    [SerializeField] Vector3Int _spawnPos;
 
-    MinoData holdPieceData;
-    bool isHoldUsed;
+    MinoData _holdPieceData;
+    bool _isHoldUsed;
 
-    List<MinoData> nextMinoDataList;         // Why List? => Add/Remove is easy.
-    public static int maxNextNum { get { return 5; } }
+    List<MinoData> _nextMinoDataList;         // Why List? => Add/Remove is easy.
+    public static int _maxNextNum { get { return 5; } }
 
     void Awake()
     {
         if (Instance) Destroy(this);
         Instance = this;
 
-        this.activePiece = GetComponentInChildren<Piece>();
-        nextMinoDataList = new List<MinoData>();
+        _activePiece = GetComponentInChildren<Piece>();
+        _nextMinoDataList = new List<MinoData>();
     }
 
     void Start()
@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
 
     void GameStart()
     {
-        for (int i = 0; i < maxNextNum; ++i)
+        for (int i = 0; i < _maxNextNum; ++i)
         {
             SpawnPieces();
         }
@@ -49,86 +49,86 @@ public class GameManager : MonoBehaviour
 
     public void Set(Piece piece)
     {
-        board.SetTilesOnMap(piece);
+        _board.SetTilesOnMap(piece);
     }
 
     public void Clear(Piece piece)
     {
-        board.ClearTilesOnMap(piece);
+        _board.ClearTilesOnMap(piece);
     }
 
     #region Basic Game Functions
 
     public void HoldPiece()
     {
-        if (isHoldUsed) return;
+        if (_isHoldUsed) return;
 
-        isHoldUsed = true;
+        _isHoldUsed = true;
 
-        if (holdPieceData.Equals(default(MinoData)))        // MinoData is struct, so it couldn't get null!
+        if (_holdPieceData.Equals(default(MinoData)))        // MinoData is struct, so it couldn't get null!
         {
-            holdPieceData = activePiece.data;
-            activePiece.Init(spawnPos, nextMinoDataList[0]);
-            nextMinoDataList.Remove(nextMinoDataList[0]);
+            _holdPieceData = _activePiece._data;
+            _activePiece.Init(_spawnPos, _nextMinoDataList[0]);
+            _nextMinoDataList.Remove(_nextMinoDataList[0]);
             SpawnPieces();
         }
         else
         {
-            MinoData activePieceDataCpy = activePiece.data;
-            activePiece.Init(spawnPos, holdPieceData);
-            holdPieceData = activePieceDataCpy;
+            MinoData activePieceDataCpy = _activePiece._data;
+            _activePiece.Init(_spawnPos, _holdPieceData);
+            _holdPieceData = activePieceDataCpy;
         }
 
-        GameEventManager.Instance.InvokeHoldEvent(holdPieceData);
+        GameEventManager.Instance.InvokeHoldEvent(_holdPieceData);
     }
 
     public void ActivateHold()
     {
-        isHoldUsed = false;
+        _isHoldUsed = false;
     }
 
     public void SpawnPieces()
     {
-        if (nextMinoDataList.Count >= maxNextNum) return;
+        if (_nextMinoDataList.Count >= _maxNextNum) return;
 
         MinoData randMinoData = RandomGenerator.Instance.GetRandomMinoData();
 
-        nextMinoDataList.Add(randMinoData);
+        _nextMinoDataList.Add(randMinoData);
 
-        if (nextMinoDataList.Count >= maxNextNum)
+        if (_nextMinoDataList.Count >= _maxNextNum)
         {
-            GameEventManager.Instance.InvokeNextMinoChangedEvent(nextMinoDataList);
+            GameEventManager.Instance.InvokeNextMinoChangedEvent(_nextMinoDataList);
         }
     }
 
     public void SetActivePiece()
     {
-        MinoData nextPieceData = nextMinoDataList[0];
-        nextMinoDataList.Remove(nextMinoDataList[0]);
+        MinoData nextPieceData = _nextMinoDataList[0];
+        _nextMinoDataList.Remove(_nextMinoDataList[0]);
         SpawnPieces();
 
-        activePiece.Init(spawnPos, nextPieceData);
-        if (!IsValidPosition(activePiece, spawnPos))
+        _activePiece.Init(_spawnPos, nextPieceData);
+        if (!IsValidPosition(_activePiece, _spawnPos))
         {
             GameOver();
         }
-        Set(activePiece);
+        Set(_activePiece);
 
-        GameEventManager.Instance.InvokeActiveMinoChangedEvent(activePiece);
+        GameEventManager.Instance.InvokeActiveMinoChangedEvent(_activePiece);
     }
 
     public bool IsValidPosition(Piece piece, Vector3Int position)
     {
-        for (int i = 0; i < piece.cells.Length; i++)
+        for (int i = 0; i < piece._cells.Length; i++)
         {
-            Vector3Int tilePos = piece.cells[i] + position;
+            Vector3Int tilePos = piece._cells[i] + position;
 
-            if (!bounds.Contains((Vector2Int)tilePos))
+            if (!_bounds.Contains((Vector2Int)tilePos))
             {
                 return false;
             }
 
-            if (board.HasTile(tilePos))
+            if (_board.HasTile(tilePos))
             {
                 return false;
             }
@@ -139,9 +139,9 @@ public class GameManager : MonoBehaviour
     public void ClearLines()
     {
         // naive Style
-        int row = bounds.yMin;
+        int row = _bounds.yMin;
         int lineClearInARowCnt = 0;
-        while (row < bounds.yMax)
+        while (row < _bounds.yMax)
         {
             if (IsLineFull(row))
             {
@@ -164,10 +164,10 @@ public class GameManager : MonoBehaviour
 
     bool IsLineFull(int row)
     {
-        for (int col = bounds.xMin; col < bounds.xMax; ++col)
+        for (int col = _bounds.xMin; col < _bounds.xMax; ++col)
         {
             Vector3Int pos = new Vector3Int(col, row, 0);
-            if (!board.HasTile(pos))
+            if (!_board.HasTile(pos))
             {
                 return false;
             }
@@ -177,28 +177,28 @@ public class GameManager : MonoBehaviour
 
     void EachLineClear(int row)
     {
-        for (int col = bounds.xMin; col < bounds.xMax; ++col)
+        for (int col = _bounds.xMin; col < _bounds.xMax; ++col)
         {
             Vector3Int pos = new Vector3Int(col, row, 0);
-            board.SetTilesOnMap(pos, null);
+            _board.SetTilesOnMap(pos, null);
         }
     }
 
     void PushLinesDown(int startRow)
     {
-        for (int row = startRow; row < bounds.yMax; ++row)
+        for (int row = startRow; row < _bounds.yMax; ++row)
         {
-            for (int col = bounds.xMin; col < bounds.xMax; ++col)
+            for (int col = _bounds.xMin; col < _bounds.xMax; ++col)
             {
                 Vector3Int nextLineCellPos = new Vector3Int(col, row + 1, 0);
-                board.LowerTile(nextLineCellPos);
+                _board.LowerTile(nextLineCellPos);
             }
         }
     }
 
     void GameOver()
     {
-        board.ClearAllTiles();
+        _board.ClearAllTiles();
     }
     #endregion
 }

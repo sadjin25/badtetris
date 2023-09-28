@@ -6,40 +6,40 @@ using Tetris.CustomStructs;
 
 public class Piece : MonoBehaviour
 {
-    public Vector3Int position { get; private set; }
-    public Vector3Int[] cells { get; private set; }
-    public MinoData data { get; private set; }
-    public int rotateIndex { get; private set; }
+    public Vector3Int _position { get; private set; }
+    public Vector3Int[] _cells { get; private set; }
+    public MinoData _data { get; private set; }
+    public int _rotateIndex { get; private set; }
 
     //--------------------Move Variables----------------
-    [SerializeField] float stepDelay = 1f;
-    [SerializeField] float lockDelay = .5f;
-    [SerializeField] float softDropDelay = .15f;
-    [SerializeField] float das = .3f;
-    [SerializeField] float arr = 0f;
+    [SerializeField] float _stepDelay = 1f;
+    [SerializeField] float _lockDelay = .5f;
+    [SerializeField] float _softDropDelay = .025f;
+    [SerializeField] float _das = .3f;
+    [SerializeField] float _arr = 0f;
 
-    float stepTime;
-    float lockTime;
-    float softDropTime;
-    float dasChkTime;
-    float arrChkTime;
-    bool isFirstMoveTriggered;
+    float _stepTime;
+    float _lockTime;
+    float _softDropTime;
+    float _dasChkTime;
+    float _arrChkTime;
+    bool _isFirstMoveTriggered;
     //-----------------------INPUTS-------------------------
-    [SerializeField] PieceController pieceController;
-    bool isHardDropping;
-    bool isSoftDropping;
-    RotateType rotateDir;
-    MoveLRType moveDir;
+    [SerializeField] PieceController _pieceController;
+    bool _isHardDropping;
+    bool _isSoftDropping;
+    RotateType _rotateDir;
+    MoveLRType _moveDir;
 
     void Update()
     {
         GameManager.Instance.Clear(this);
-        lockTime += Time.deltaTime;
-        stepTime += Time.deltaTime;
+        _lockTime += Time.deltaTime;
+        _stepTime += Time.deltaTime;
 
-        pieceController.InputUpdate();
+        _pieceController.InputUpdate();
 
-        if (stepTime >= stepDelay)
+        if (_stepTime >= _stepDelay)
         {
             ResetStepTime();
             Step();
@@ -51,12 +51,12 @@ public class Piece : MonoBehaviour
     #region User Controls
     bool Move(Vector2Int moveVec)
     {
-        Vector3Int newPos = this.position + (Vector3Int)moveVec;
+        Vector3Int newPos = _position + (Vector3Int)moveVec;
 
         bool valid = GameManager.Instance.IsValidPosition(this, newPos);
         if (valid)
         {
-            position = newPos;
+            _position = newPos;
             ResetLockTime();
         }
         return valid;
@@ -64,35 +64,35 @@ public class Piece : MonoBehaviour
 
     public void SoftDrop()
     {
-        softDropTime += Time.deltaTime;
-        if (softDropTime >= softDropDelay)
+        _softDropTime += Time.deltaTime;
+        if (_softDropTime >= _softDropDelay)
         {
-            softDropTime = 0f;
+            _softDropTime = 0f;
             Move(Vector2Int.down);
         }
     }
 
     void ResetSoftDropDelay()
     {
-        softDropTime = 0f;
+        _softDropTime = 0f;
     }
 
     public void MoveWithDAS(Vector2Int moveVec)
     {
-        if (!isFirstMoveTriggered)
+        if (!_isFirstMoveTriggered)
         {
             Move(moveVec);
-            isFirstMoveTriggered = true;
+            _isFirstMoveTriggered = true;
         }
 
-        dasChkTime += Time.deltaTime;
-        if (dasChkTime >= das)
+        _dasChkTime += Time.deltaTime;
+        if (_dasChkTime >= _das)
         {
-            dasChkTime = das;
-            arrChkTime += Time.deltaTime;
-            if (arrChkTime >= arr)
+            _dasChkTime = _das;
+            _arrChkTime += Time.deltaTime;
+            if (_arrChkTime >= _arr)
             {
-                arrChkTime = 0f;
+                _arrChkTime = 0f;
                 Move(moveVec);
             }
         }
@@ -100,34 +100,34 @@ public class Piece : MonoBehaviour
 
     public void ResetAllDASDelay()
     {
-        dasChkTime = 0f;
-        arrChkTime = 0f;
-        isFirstMoveTriggered = false;
+        _dasChkTime = 0f;
+        _arrChkTime = 0f;
+        _isFirstMoveTriggered = false;
     }
 
     public void Rotate(int rotateDir)
     {
         ResetSoftDropDelay();
 
-        int originalRot = this.rotateIndex;
-        rotateIndex = Wrap(rotateIndex + rotateDir, 0, 4);
+        int originalRot = _rotateIndex;
+        _rotateIndex = Wrap(_rotateIndex + rotateDir, 0, 4);
 
         ApplyRotation(rotateDir);
 
-        if (!WallKickTest(originalRot, rotateIndex, rotateDir))
+        if (!WallKickTest(originalRot, _rotateIndex, rotateDir))
         {
-            this.rotateIndex = originalRot;
+            _rotateIndex = originalRot;
             ApplyRotation(-rotateDir);
         }
     }
 
     void ApplyRotation(int rotateDir)
     {
-        for (int i = 0; i < this.cells.Length; i++)
+        for (int i = 0; i < _cells.Length; i++)
         {
-            Vector3 cell = this.cells[i];
+            Vector3 cell = _cells[i];
             int x = (int)cell.x, y = (int)cell.y;
-            switch (this.data.mino)
+            switch (_data._mino)
             {
                 case Mino.O:
                     break;
@@ -142,13 +142,13 @@ public class Piece : MonoBehaviour
                     y = Mathf.RoundToInt((cell.x * Data.RotationMatrix[2] * rotateDir) + (cell.y * Data.RotationMatrix[3] * rotateDir));
                     break;
             }
-            this.cells[i] = new Vector3Int(x, y, 0);
+            _cells[i] = new Vector3Int(x, y, 0);
         }
     }
 
     void ResetRotationIndex()
     {
-        rotateIndex = 0;
+        _rotateIndex = 0;
     }
 
     bool WallKickTest(int beforeRotateIndex, int afterRotateIndex, int rotateDir)
@@ -156,9 +156,9 @@ public class Piece : MonoBehaviour
         if (Move(Vector2Int.zero)) return true;
 
         int wallkickIndex = GetWallKickIndex(beforeRotateIndex, afterRotateIndex, rotateDir);
-        for (int i = 0; i < this.data.wallkicks.GetLength(1); i++)
+        for (int i = 0; i < _data._wallkicks.GetLength(1); i++)
         {
-            Vector2Int translation = this.data.wallkicks[wallkickIndex, i];
+            Vector2Int translation = _data._wallkicks[wallkickIndex, i];
             if (Move(translation))
             {
                 return true;
@@ -203,16 +203,16 @@ public class Piece : MonoBehaviour
     #region Game Mechanic
     public void Init(Vector3Int position, MinoData data)
     {
-        this.position = position;
-        this.data = data;
-        if (this.cells == null)
+        _position = position;
+        _data = data;
+        if (_cells == null)
         {
-            this.cells = new Vector3Int[data.cells.Length];
+            _cells = new Vector3Int[_data._cells.Length];
         }
 
-        for (int i = 0; i < data.cells.Length; i++)
+        for (int i = 0; i < data._cells.Length; i++)
         {
-            this.cells[i] = (Vector3Int)data.cells[i];
+            _cells[i] = (Vector3Int)_data._cells[i];
         }
     }
 
@@ -233,19 +233,19 @@ public class Piece : MonoBehaviour
 
     void ResetLockTime()
     {
-        lockTime = 0f;
+        _lockTime = 0f;
     }
 
     void ResetStepTime()
     {
-        stepTime = 0f;
+        _stepTime = 0f;
     }
 
     void Step()
     {
         if (!Move(Vector2Int.down))
         {
-            if (lockTime >= lockDelay)
+            if (_lockTime >= _lockDelay)
             {
                 ResetLockTime();
                 Lock();

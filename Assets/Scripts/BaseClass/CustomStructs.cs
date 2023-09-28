@@ -7,15 +7,15 @@ namespace Tetris.CustomStructs
     [System.Serializable]
     public struct MinoData
     {
-        public Mino mino;
-        public Tile tile;
-        public Vector2Int[] cells { get; private set; }
-        public Vector2Int[,] wallkicks { get; private set; }
+        public Mino _mino;
+        public Tile _tile;
+        public Vector2Int[] _cells { get; private set; }
+        public Vector2Int[,] _wallkicks { get; private set; }
 
         public void Init()
         {
-            this.cells = Data.Cells[this.mino];
-            this.wallkicks = Data.WallKicks[this.mino];
+            _cells = Data.Cells[_mino];
+            _wallkicks = Data.WallKicks[_mino];
         }
     }
 }

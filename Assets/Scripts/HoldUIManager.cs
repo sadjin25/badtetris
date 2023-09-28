@@ -7,16 +7,16 @@ public class HoldUIManager : MonoBehaviour
 {
     public static HoldUIManager Instance { get; private set; }
 
-    List<Image> baseImages;
+    List<Image> _baseImages;
 
-    [SerializeField] MinoUI holdMino;
+    [SerializeField] MinoUI _holdMino;
 
     void Awake()
     {
         if (Instance) Destroy(this);
         Instance = this;
 
-        baseImages = new List<Image>();
+        _baseImages = new List<Image>();
     }
 
     public void HoldUIInit()
@@ -26,6 +26,6 @@ public class HoldUIManager : MonoBehaviour
 
     void OnHold(object s, GameEventManager.OnHoldArgs e)
     {
-        holdMino.SetImage(e.holdPieceData.mino);
+        _holdMino.SetImage(e.holdPieceData._mino);
     }
 }

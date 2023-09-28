@@ -7,7 +7,7 @@ public class ScoreUIManager : MonoBehaviour
 {
     public static ScoreUIManager Instance { get; private set; }
 
-    [SerializeField] MinoUI scoreUI;
+    [SerializeField] MinoUI _scoreUI;
 
     void Awake()
     {
@@ -27,8 +27,8 @@ public class ScoreUIManager : MonoBehaviour
 
     IEnumerator ShowingScoreCoroutine(ScoreType scoreType)
     {
-        scoreUI.SetImage(scoreType);
+        _scoreUI.SetImage(scoreType);
         yield return new WaitForSeconds(0.6f);
-        scoreUI.Clear();
+        _scoreUI.Clear();
     }
 }

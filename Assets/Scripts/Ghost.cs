@@ -5,17 +5,17 @@ using UnityEngine.Tilemaps;
 
 public class Ghost : MonoBehaviour
 {
-    [SerializeField] Tile tile;
-    [SerializeField] Piece activePiece;
+    [SerializeField] Tile _tile;
+    [SerializeField] Piece _activePiece;
 
-    public Tilemap tilemap { get; private set; }
-    public Vector3Int[] cells { get; private set; }
-    public Vector3Int position { get; private set; }
+    public Tilemap _tilemap { get; private set; }
+    public Vector3Int[] _cells { get; private set; }
+    public Vector3Int _position { get; private set; }
 
     void Awake()
     {
-        tilemap = GetComponentInChildren<Tilemap>();
-        cells = new Vector3Int[4];
+        _tilemap = GetComponentInChildren<Tilemap>();
+        _cells = new Vector3Int[4];
     }
 
     void LateUpdate()
@@ -28,34 +28,34 @@ public class Ghost : MonoBehaviour
 
     void Clear()
     {
-        for (int i = 0; i < cells.Length; i++)
+        for (int i = 0; i < _cells.Length; i++)
         {
-            Vector3Int tilePos = cells[i] + position;
-            this.tilemap.SetTile(tilePos, null);
+            Vector3Int tilePos = _cells[i] + _position;
+            _tilemap.SetTile(tilePos, null);
         }
     }
 
     void Copy()
     {
-        for (int i = 0; i < cells.Length; ++i)
+        for (int i = 0; i < _cells.Length; ++i)
         {
-            cells[i] = activePiece.cells[i];
+            _cells[i] = _activePiece._cells[i];
         }
-        this.position = activePiece.position;
+        _position = _activePiece._position;
     }
 
     void Drop()
     {
-        Vector3Int pos = this.position;
+        Vector3Int pos = _position;
         int cur = pos.y;
-        int bottom = -GameManager.Instance.bounds.height / 2 - 1;
-        GameManager.Instance.Clear(activePiece);
+        int bottom = -GameManager.Instance._bounds.height / 2 - 1;
+        GameManager.Instance.Clear(_activePiece);
         for (int row = cur; row >= bottom; --row)
         {
             pos.y = row;
-            if (GameManager.Instance.IsValidPosition(activePiece, pos))
+            if (GameManager.Instance.IsValidPosition(_activePiece, pos))
             {
-                this.position = pos;
+                _position = pos;
             }
             else
             {
@@ -63,15 +63,15 @@ public class Ghost : MonoBehaviour
             }
         }
         // original active piece is deleted, draw it again
-        GameManager.Instance.Set(activePiece);
+        GameManager.Instance.Set(_activePiece);
     }
 
     void Set()
     {
-        for (int i = 0; i < cells.Length; i++)
+        for (int i = 0; i < _cells.Length; i++)
         {
-            Vector3Int tilePos = cells[i] + position;
-            this.tilemap.SetTile(tilePos, tile);
+            Vector3Int tilePos = _cells[i] + _position;
+            _tilemap.SetTile(tilePos, _tile);
         }
     }
 }

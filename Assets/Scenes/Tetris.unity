@@ -152,21 +152,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad3bbfa8626d971478a37cfe55dfbc59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basePieceDataBag:
-  - mino: 0
-    tile: {fileID: 11400000, guid: e87a8e49b99c33d4887b877d14b4e5ec, type: 2}
-  - mino: 1
-    tile: {fileID: 11400000, guid: 7f014cbe92376614580f42d025d9fed5, type: 2}
-  - mino: 2
-    tile: {fileID: 11400000, guid: 36487be1eb29f5c4692e783dedf66cf9, type: 2}
-  - mino: 3
-    tile: {fileID: 11400000, guid: 3a10442716a1ab34698374bf8a717c28, type: 2}
-  - mino: 4
-    tile: {fileID: 11400000, guid: 00f8232ffdead584b994f29f175277ab, type: 2}
-  - mino: 5
-    tile: {fileID: 11400000, guid: d4fda8bf71f04a1429b22346aee34c2c, type: 2}
-  - mino: 6
-    tile: {fileID: 11400000, guid: 9c08c4278eddf5c4b96601310ce88766, type: 2}
+  _basePieceDataBag:
+  - _mino: 0
+    _tile: {fileID: 11400000, guid: e87a8e49b99c33d4887b877d14b4e5ec, type: 2}
+  - _mino: 1
+    _tile: {fileID: 11400000, guid: 7f014cbe92376614580f42d025d9fed5, type: 2}
+  - _mino: 2
+    _tile: {fileID: 11400000, guid: 36487be1eb29f5c4692e783dedf66cf9, type: 2}
+  - _mino: 3
+    _tile: {fileID: 11400000, guid: 3a10442716a1ab34698374bf8a717c28, type: 2}
+  - _mino: 4
+    _tile: {fileID: 11400000, guid: 00f8232ffdead584b994f29f175277ab, type: 2}
+  - _mino: 5
+    _tile: {fileID: 11400000, guid: d4fda8bf71f04a1429b22346aee34c2c, type: 2}
+  - _mino: 6
+    _tile: {fileID: 11400000, guid: 9c08c4278eddf5c4b96601310ce88766, type: 2}
 --- !u!4 &104234651
 Transform:
   m_ObjectHideFlags: 0
@@ -751,7 +751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acbf7067464672c48b638a89a1e47db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseImageHolder: {fileID: 11400000, guid: 2917f7998c56a934d872b79462a7f56b, type: 2}
+  _baseImageHolder: {fileID: 11400000, guid: 2917f7998c56a934d872b79462a7f56b, type: 2}
 --- !u!1 &648643877
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,7 +878,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acbf7067464672c48b638a89a1e47db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseImageHolder: {fileID: 11400000, guid: 2917f7998c56a934d872b79462a7f56b, type: 2}
+  _baseImageHolder: {fileID: 11400000, guid: 2917f7998c56a934d872b79462a7f56b, type: 2}
 --- !u!1 &863521842
 GameObject:
   m_ObjectHideFlags: 0
@@ -993,7 +993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79ac313d683becd4b94990d077210602, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreUI: {fileID: 1541689172}
+  _scoreUI: {fileID: 1541689172}
 --- !u!1 &927013119
 GameObject:
   m_ObjectHideFlags: 0
@@ -1025,8 +1025,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e35ddecfda2cb3241befd24784fdc87f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  board: {fileID: 1716189037}
-  spawnPos: {x: -1, y: 8, z: 0}
+  _board: {fileID: 1716189037}
+  _spawnPos: {x: -1, y: 8, z: 0}
 --- !u!114 &927013121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1039,8 +1039,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0990c3ea8a93654b871ad214599b341, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  piece: {fileID: 927013122}
-  inputReader: {fileID: 11400000, guid: 2d94b8cd086cc3648a2b89a959a74ce3, type: 2}
+  _piece: {fileID: 927013122}
+  _inputReader: {fileID: 11400000, guid: 2d94b8cd086cc3648a2b89a959a74ce3, type: 2}
 --- !u!114 &927013122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1053,12 +1053,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5bfa384743ac284780d361ab519a615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stepDelay: 1
-  lockDelay: 0.5
-  softDropDelay: 0.025
-  das: 0.2
-  arr: 0
-  pieceController: {fileID: 927013121}
+  _stepDelay: 1
+  _lockDelay: 0.5
+  _softDropDelay: 0.025
+  _das: 0.3
+  _arr: 0
+  _pieceController: {fileID: 927013121}
 --- !u!4 &927013123
 Transform:
   m_ObjectHideFlags: 0
@@ -1386,8 +1386,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5697fa17e0cb3144a242ac53aed9822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tile: {fileID: 11400000, guid: 20b7b6d3ae8763b4ab9b411140e774ba, type: 2}
-  activePiece: {fileID: 927013122}
+  _tile: {fileID: 11400000, guid: 20b7b6d3ae8763b4ab9b411140e774ba, type: 2}
+  _activePiece: {fileID: 927013122}
 --- !u!1 &1376072763
 GameObject:
   m_ObjectHideFlags: 0
@@ -1475,7 +1475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ea9c998aaa2b0e4995a3e5f8ab0a440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holdMino: {fileID: 2127184065}
+  _holdMino: {fileID: 2127184065}
 --- !u!114 &1488253819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1587,7 +1587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acbf7067464672c48b638a89a1e47db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseImageHolder: {fileID: 11400000, guid: 937bc53e7c2940c4b9b45331767396e3, type: 2}
+  _baseImageHolder: {fileID: 11400000, guid: 937bc53e7c2940c4b9b45331767396e3, type: 2}
 --- !u!1 &1581808088
 GameObject:
   m_ObjectHideFlags: 0
@@ -1853,7 +1853,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7471752611b559147aa99495ac7f6504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextsArr:
+  _nextsArr:
   - {fileID: 2079642279}
   - {fileID: 585081967}
   - {fileID: 1807547271}
@@ -2043,7 +2043,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acbf7067464672c48b638a89a1e47db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseImageHolder: {fileID: 11400000, guid: 2917f7998c56a934d872b79462a7f56b, type: 2}
+  _baseImageHolder: {fileID: 11400000, guid: 2917f7998c56a934d872b79462a7f56b, type: 2}
 --- !u!1 &1864151266
 GameObject:
   m_ObjectHideFlags: 0
@@ -2334,7 +2334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acbf7067464672c48b638a89a1e47db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseImageHolder: {fileID: 11400000, guid: 2917f7998c56a934d872b79462a7f56b, type: 2}
+  _baseImageHolder: {fileID: 11400000, guid: 2917f7998c56a934d872b79462a7f56b, type: 2}
 --- !u!1 &2079642277
 GameObject:
   m_ObjectHideFlags: 0
@@ -2385,7 +2385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acbf7067464672c48b638a89a1e47db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseImageHolder: {fileID: 11400000, guid: 2917f7998c56a934d872b79462a7f56b, type: 2}
+  _baseImageHolder: {fileID: 11400000, guid: 2917f7998c56a934d872b79462a7f56b, type: 2}
 --- !u!1 &2127184063
 GameObject:
   m_ObjectHideFlags: 0
@@ -2436,4 +2436,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acbf7067464672c48b638a89a1e47db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseImageHolder: {fileID: 11400000, guid: 2917f7998c56a934d872b79462a7f56b, type: 2}
+  _baseImageHolder: {fileID: 11400000, guid: 2917f7998c56a934d872b79462a7f56b, type: 2}

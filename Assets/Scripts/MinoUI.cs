@@ -8,34 +8,34 @@ using Tetris.EnumTypes;
 [System.Serializable]
 public struct MinoImageSet
 {
-    public Mino minoType;
-    public Image image;
+    public Mino _minoType;
+    public Image _image;
 }
 
 public class MinoUI : MonoBehaviour
 {
-    [SerializeField] ImageHolder baseImageHolder;     // MINO ORDER : IOTLJSZ, SCORE ORDER : TETRIS, TSPIN SINGLE, TSPIN DOUBLE, TSPIN TRIPLE, B2B 
-    Image currentImage;
-    Mino currentPieceType;
+    [SerializeField] ImageHolder _baseImageHolder;     // MINO ORDER : IOTLJSZ, SCORE ORDER : TETRIS, TSPIN SINGLE, TSPIN DOUBLE, TSPIN TRIPLE, B2B 
+    Image _currentImage;
+    Mino _currentPieceType;
 
     void Awake()
     {
-        currentImage = GetComponentInChildren<Image>();
+        _currentImage = GetComponentInChildren<Image>();
     }
 
     public void SetImage(Mino minoType)
     {
-        currentPieceType = minoType;
-        currentImage.sprite = baseImageHolder.sprites[(int)currentPieceType];
+        _currentPieceType = minoType;
+        _currentImage.sprite = _baseImageHolder.sprites[(int)_currentPieceType];
     }
 
     public void SetImage(ScoreType scoreType)
     {
-        currentImage.sprite = baseImageHolder.sprites[(int)scoreType];
+        _currentImage.sprite = _baseImageHolder.sprites[(int)scoreType];
     }
 
     public void Clear()
     {
-        currentImage.sprite = null;
+        _currentImage.sprite = null;
     }
 }

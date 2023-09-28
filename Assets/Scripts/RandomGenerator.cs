@@ -8,9 +8,9 @@ public class RandomGenerator : MonoBehaviour
     public static RandomGenerator Instance { get; private set; }
 
     const int MAX_PIECE_NUM = 7;
-    [SerializeField] MinoData[] basePieceDataBag;
-    bool[] chkPiecePoppedInBag = new bool[MAX_PIECE_NUM];
-    int usedPieceNum;
+    [SerializeField] MinoData[] _basePieceDataBag;
+    bool[] _chkPiecePoppedInBag = new bool[MAX_PIECE_NUM];
+    int _usedPieceNum;
 
     void Awake()
     {
@@ -19,9 +19,9 @@ public class RandomGenerator : MonoBehaviour
             Instance = this;
         }
 
-        for (int i = 0; i < basePieceDataBag.Length; i++)
+        for (int i = 0; i < _basePieceDataBag.Length; i++)
         {
-            basePieceDataBag[i].Init();
+            _basePieceDataBag[i].Init();
         }
 
         ResetPieceCheckArr();
@@ -30,27 +30,27 @@ public class RandomGenerator : MonoBehaviour
     // Return Random MinoData by following 7-bag system  
     public MinoData GetRandomMinoData()
     {
-        if (usedPieceNum >= MAX_PIECE_NUM)
+        if (_usedPieceNum >= MAX_PIECE_NUM)
         {
             ResetPieceCheckArr();
-            usedPieceNum = 0;
+            _usedPieceNum = 0;
         }
-        ++usedPieceNum;
+        ++_usedPieceNum;
 
         int index = Random.Range(0, MAX_PIECE_NUM);
-        while (chkPiecePoppedInBag[index])
+        while (_chkPiecePoppedInBag[index])
         {
             index = Random.Range(0, MAX_PIECE_NUM);
         }
 
-        MinoData dataToReturn = basePieceDataBag[index];
-        chkPiecePoppedInBag[index] = true;
+        MinoData dataToReturn = _basePieceDataBag[index];
+        _chkPiecePoppedInBag[index] = true;
 
         return dataToReturn;
     }
 
     void ResetPieceCheckArr()
     {
-        System.Array.Fill(chkPiecePoppedInBag, false);
+        System.Array.Fill(_chkPiecePoppedInBag, false);
     }
 }

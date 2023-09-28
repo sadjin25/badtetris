@@ -5,51 +5,51 @@ using UnityEngine.Tilemaps;
 
 public class Board : MonoBehaviour
 {
-    public Tilemap tilemap { get; private set; }
+    public Tilemap _tilemap { get; private set; }
 
     void Awake()
     {
-        tilemap = GetComponentInChildren<Tilemap>();
+        _tilemap = GetComponentInChildren<Tilemap>();
     }
 
     public void SetTilesOnMap(Piece piece)
     {
-        for (int i = 0; i < piece.cells.Length; i++)
+        for (int i = 0; i < piece._cells.Length; i++)
         {
-            Vector3Int tilePos = piece.cells[i] + piece.position;
-            this.tilemap.SetTile(tilePos, piece.data.tile);
+            Vector3Int tilePos = piece._cells[i] + piece._position;
+            _tilemap.SetTile(tilePos, piece._data._tile);
         }
     }
 
     public void SetTilesOnMap(Vector3Int pos, TileBase tile)
     {
-        tilemap.SetTile(pos, tile);
+        _tilemap.SetTile(pos, tile);
     }
 
     public void ClearTilesOnMap(Piece piece)
     {
-        for (int i = 0; i < piece.cells.Length; i++)
+        for (int i = 0; i < piece._cells.Length; i++)
         {
-            Vector3Int tilePos = piece.cells[i] + piece.position;
-            this.tilemap.SetTile(tilePos, null);
+            Vector3Int tilePos = piece._cells[i] + piece._position;
+            _tilemap.SetTile(tilePos, null);
         }
     }
 
     public void ClearAllTiles()
     {
-        tilemap.ClearAllTiles();
+        _tilemap.ClearAllTiles();
     }
 
     public bool HasTile(Vector3Int tilePos)
     {
-        return tilemap.HasTile(tilePos);
+        return _tilemap.HasTile(tilePos);
     }
 
     public void LowerTile(Vector3Int tilePosToLower)
     {
-        TileBase aboveTile = tilemap.GetTile(tilePosToLower);
+        TileBase aboveTile = _tilemap.GetTile(tilePosToLower);
         Vector3Int curCellPos = new Vector3Int(tilePosToLower.x, tilePosToLower.y - 1, 0);
-        tilemap.SetTile(curCellPos, aboveTile);
+        _tilemap.SetTile(curCellPos, aboveTile);
     }
 
 }
