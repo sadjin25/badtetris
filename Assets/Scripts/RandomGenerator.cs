@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Tetris.CustomStructs;
 
 public class RandomGenerator : MonoBehaviour
 {

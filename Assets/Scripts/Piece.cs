@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Tetris.EnumTypes;
-using System;
+using Tetris.CustomStructs;
 
 public class Piece : MonoBehaviour
 {

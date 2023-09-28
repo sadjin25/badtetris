@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Tetris.EnumTypes;
+using Tetris.CustomStructs;
 
 public class GameManager : MonoBehaviour
 {
