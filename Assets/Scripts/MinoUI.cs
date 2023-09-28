@@ -3,39 +3,41 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using Tetris.EnumTypes;
-
-[System.Serializable]
-public struct MinoImageSet
-{
-    public Mino _minoType;
-    public Image _image;
-}
+using Tetris.CustomStructs;
 
 public class MinoUI : MonoBehaviour
 {
-    [SerializeField] ImageHolder _baseImageHolder;     // MINO ORDER : IOTLJSZ, SCORE ORDER : TETRIS, TSPIN SINGLE, TSPIN DOUBLE, TSPIN TRIPLE, B2B 
-    Image _currentImage;
-    Mino _currentPieceType;
+    // MINO ORDER  : IOTLJSZ
+    // SCORE ORDER : TETRIS, TSPIN SINGLE, TSPIN DOUBLE, TSPIN TRIPLE, B2B 
+    [SerializeField] ImageHolder _baseImageHolder;
+    MinoUISet _minoUISet;
 
     void Awake()
     {
-        _currentImage = GetComponentInChildren<Image>();
+        _minoUISet._image = GetComponentInChildren<Image>();
+        _minoUISet._text = GetComponentInChildren<TextMeshProUGUI>();
     }
 
     public void SetImage(Mino minoType)
     {
-        _currentPieceType = minoType;
-        _currentImage.sprite = _baseImageHolder.sprites[(int)_currentPieceType];
+        _minoUISet._minoType = minoType;
+        _minoUISet._image.sprite = _baseImageHolder.sprites[(int)minoType];
     }
 
     public void SetImage(ScoreType scoreType)
     {
-        _currentImage.sprite = _baseImageHolder.sprites[(int)scoreType];
+        _minoUISet._image.sprite = _baseImageHolder.sprites[(int)scoreType];
     }
 
-    public void Clear()
+    public void ClearImage()
     {
-        _currentImage.sprite = null;
+        _minoUISet._image.sprite = null;
+    }
+
+    public void UpdateText(int value)
+    {
+        _minoUISet._text.text = value.ToString();
     }
 }

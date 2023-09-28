@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 using Tetris.EnumTypes;
+using TMPro;
 
 namespace Tetris.CustomStructs
 {
@@ -17,5 +19,13 @@ namespace Tetris.CustomStructs
             _cells = Data.Cells[_mino];
             _wallkicks = Data.WallKicks[_mino];
         }
+    }
+
+    [System.Serializable]
+    public struct MinoUISet
+    {
+        public Mino _minoType;
+        public Image _image;
+        public TextMeshProUGUI _text;
     }
 }
