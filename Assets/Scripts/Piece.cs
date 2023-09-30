@@ -6,6 +6,8 @@ using Tetris.CustomStructs;
 
 public class Piece : MonoBehaviour
 {
+    [SerializeField] Board _board;
+
     public Vector3Int _position { get; private set; }
     public Vector3Int[] _cells { get; private set; }
     public MinoData _data { get; private set; }
@@ -58,6 +60,7 @@ public class Piece : MonoBehaviour
         {
             _position = newPos;
             ResetLockTime();
+            GameManager.Instance.DeactivateTSpinReward();
         }
         return valid;
     }
@@ -118,6 +121,10 @@ public class Piece : MonoBehaviour
         {
             _rotateIndex = originalRot;
             ApplyRotation(-rotateDir);
+        }
+        else
+        {
+            GameManager.Instance.ActivateTSpinReward();
         }
     }
 
@@ -260,6 +267,34 @@ public class Piece : MonoBehaviour
         GameManager.Instance.SetActivePiece();
         GameManager.Instance.ActivateHold();
         ResetRotationIndex();
+    }
+
+    public bool CheckTMinoDiagBlockOccupied()
+    {
+        if (_data._mino != Mino.T) return false;
+
+        int[] dx = { 1, 1, -1, -1 };
+        int[] dy = { 1, -1, -1, 1 };
+        int occupiedDiagCnt = 0;
+
+        for (int i = 0; i < 4; ++i)
+        {
+            Vector3Int posToChk = _position;
+            posToChk.x += dx[i];
+            posToChk.y += dy[i];
+
+            if (_board.CheckPositionValid(posToChk))
+            {
+                // This is considered to be occupied
+                ++occupiedDiagCnt;
+                continue;
+            }
+            else if (_board.HasTile(posToChk))
+            {
+                ++occupiedDiagCnt;
+            }
+        }
+        return occupiedDiagCnt >= 3;
     }
     #endregion
 }

@@ -52,4 +52,13 @@ public class Board : MonoBehaviour
         _tilemap.SetTile(curCellPos, aboveTile);
     }
 
+    public bool CheckPositionValid(Vector3Int position)
+    {
+        if (GameManager.Instance._bounds.Contains((Vector2Int)position))
+        {
+            return true;
+        }
+
+        return false;
+    }
 }

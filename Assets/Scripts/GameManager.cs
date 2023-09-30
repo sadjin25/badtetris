@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     List<MinoData> _nextMinoDataList;         // Why List? => Add/Remove is easy.
     public static int _maxNextNum { get { return 5; } }
 
+    bool _isTSpinActivated;
+
     void Awake()
     {
         if (Instance) Destroy(this);
@@ -84,6 +86,16 @@ public class GameManager : MonoBehaviour
         _isHoldUsed = false;
     }
 
+    public void ActivateTSpinReward()
+    {
+        _isTSpinActivated = true;
+    }
+
+    public void DeactivateTSpinReward()
+    {
+        _isTSpinActivated = false;
+    }
+
     public void SpawnPieces()
     {
         if (_nextMinoDataList.Count >= _maxNextNum) return;
@@ -136,6 +148,10 @@ public class GameManager : MonoBehaviour
         // naive Style
         int row = _bounds.yMin;
         int lineClearInARowCnt = 0;
+
+        // T-SPIN corner block check, Last Move Check(rotation or else) is called in Piece.cs
+        _isTSpinActivated = IsThisTSpin();
+
         while (row < _bounds.yMax)
         {
             if (IsLineFull(row))
@@ -143,18 +159,44 @@ public class GameManager : MonoBehaviour
                 EachLineClear(row);
                 PushLinesDown(row);
                 ++lineClearInARowCnt;
-
-                if (lineClearInARowCnt >= 4)
-                {
-                    GameEventManager.Instance.InvokeScoringEvent(ScoreType.Tetris);
-                }
             }
             else
             {
+                ScoreChecking(lineClearInARowCnt);
                 ++row;
                 lineClearInARowCnt = 0;
+                DeactivateTSpinReward();
             }
         }
+    }
+
+    void ScoreChecking(int lineClearInARowCnt)
+    {
+        if (_isTSpinActivated)
+        {
+            switch (lineClearInARowCnt)
+            {
+                case 1:
+                    GameEventManager.Instance.InvokeScoringEvent(ScoreType.TSpinSingle);
+                    break;
+                case 2:
+                    GameEventManager.Instance.InvokeScoringEvent(ScoreType.TSpinDouble);
+                    break;
+                case 3:
+                    GameEventManager.Instance.InvokeScoringEvent(ScoreType.TSpinTriple);
+                    break;
+            }
+        }
+        else if (lineClearInARowCnt >= 4)
+        {
+            GameEventManager.Instance.InvokeScoringEvent(ScoreType.Tetris);
+        }
+    }
+
+    bool IsThisTSpin()
+    {
+        if (_activePiece._data._mino != Mino.T) return false;
+        return _activePiece.CheckTMinoDiagBlockOccupied();
     }
 
     bool IsLineFull(int row)

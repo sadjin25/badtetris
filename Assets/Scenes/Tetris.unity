@@ -1129,7 +1129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scoreUI: {fileID: 1541689172}
-  scoreImageShowingTime: 0.6
+  _scoreImageShowingTime: 0.6
 --- !u!1 &927013119
 GameObject:
   m_ObjectHideFlags: 0
@@ -1189,6 +1189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5bfa384743ac284780d361ab519a615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _board: {fileID: 1716189037}
   _stepDelay: 1
   _lockDelay: 0.5
   _softDropDelay: 0.025
