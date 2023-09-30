@@ -8,9 +8,6 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    [SerializeField] Board _board;
-    public readonly RectInt _bounds = new RectInt(new Vector2Int(-5, -10), new Vector2Int(10, 20));
-
     public Piece _activePiece { get; private set; }
     [SerializeField] Vector3Int _spawnPos;
 
@@ -48,12 +45,12 @@ public class GameManager : MonoBehaviour
 
     public void Set(Piece piece)
     {
-        _board.SetTilesOnMap(piece);
+        Board.Instance.SetTilesOnMap(piece);
     }
 
     public void Clear(Piece piece)
     {
-        _board.ClearTilesOnMap(piece);
+        Board.Instance.ClearTilesOnMap(piece);
     }
 
     #region Basic Game Functions
@@ -130,12 +127,12 @@ public class GameManager : MonoBehaviour
         {
             Vector3Int tilePos = piece._cells[i] + position;
 
-            if (!_bounds.Contains((Vector2Int)tilePos))
+            if (!Board.Instance._bounds.Contains((Vector2Int)tilePos))
             {
                 return false;
             }
 
-            if (_board.HasTile(tilePos))
+            if (Board.Instance.HasTile(tilePos))
             {
                 return false;
             }
@@ -146,13 +143,13 @@ public class GameManager : MonoBehaviour
     public void ClearLines()
     {
         // naive Style
-        int row = _bounds.yMin;
+        int row = Board.Instance._bounds.yMin;
         int lineClearInARowCnt = 0;
 
         // T-SPIN corner block check, Last Move Check(rotation or else) is called in Piece.cs
         _isTSpinActivated = IsThisTSpin();
 
-        while (row < _bounds.yMax)
+        while (row < Board.Instance._bounds.yMax)
         {
             if (IsLineFull(row))
             {
@@ -201,10 +198,10 @@ public class GameManager : MonoBehaviour
 
     bool IsLineFull(int row)
     {
-        for (int col = _bounds.xMin; col < _bounds.xMax; ++col)
+        for (int col = Board.Instance._bounds.xMin; col < Board.Instance._bounds.xMax; ++col)
         {
             Vector3Int pos = new Vector3Int(col, row, 0);
-            if (!_board.HasTile(pos))
+            if (!Board.Instance.HasTile(pos))
             {
                 return false;
             }
@@ -214,28 +211,28 @@ public class GameManager : MonoBehaviour
 
     void EachLineClear(int row)
     {
-        for (int col = _bounds.xMin; col < _bounds.xMax; ++col)
+        for (int col = Board.Instance._bounds.xMin; col < Board.Instance._bounds.xMax; ++col)
         {
             Vector3Int pos = new Vector3Int(col, row, 0);
-            _board.SetTilesOnMap(pos, null);
+            Board.Instance.SetTilesOnMap(pos, null);
         }
     }
 
     void PushLinesDown(int startRow)
     {
-        for (int row = startRow; row < _bounds.yMax; ++row)
+        for (int row = startRow; row < Board.Instance._bounds.yMax; ++row)
         {
-            for (int col = _bounds.xMin; col < _bounds.xMax; ++col)
+            for (int col = Board.Instance._bounds.xMin; col < Board.Instance._bounds.xMax; ++col)
             {
                 Vector3Int nextLineCellPos = new Vector3Int(col, row + 1, 0);
-                _board.LowerTile(nextLineCellPos);
+                Board.Instance.LowerTile(nextLineCellPos);
             }
         }
     }
 
     void GameOver()
     {
-        _board.ClearAllTiles();
+        Board.Instance.ClearAllTiles();
     }
     #endregion
 }

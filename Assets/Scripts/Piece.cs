@@ -6,8 +6,6 @@ using Tetris.CustomStructs;
 
 public class Piece : MonoBehaviour
 {
-    [SerializeField] Board _board;
-
     public Vector3Int _position { get; private set; }
     public Vector3Int[] _cells { get; private set; }
     public MinoData _data { get; private set; }
@@ -283,13 +281,13 @@ public class Piece : MonoBehaviour
             posToChk.x += dx[i];
             posToChk.y += dy[i];
 
-            if (_board.CheckPositionValid(posToChk))
+            if (Board.Instance.CheckPositionValid(posToChk))
             {
                 // This is considered to be occupied
                 ++occupiedDiagCnt;
                 continue;
             }
-            else if (_board.HasTile(posToChk))
+            else if (Board.Instance.HasTile(posToChk))
             {
                 ++occupiedDiagCnt;
             }

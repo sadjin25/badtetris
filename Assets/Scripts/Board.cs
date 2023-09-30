@@ -5,10 +5,16 @@ using UnityEngine.Tilemaps;
 
 public class Board : MonoBehaviour
 {
+    public static Board Instance { get; private set; }
     public Tilemap _tilemap { get; private set; }
+
+    public readonly RectInt _bounds = new RectInt(new Vector2Int(-5, -10), new Vector2Int(10, 20));
 
     void Awake()
     {
+        if (Instance) Destroy(this);
+        Instance = this;
+
         _tilemap = GetComponentInChildren<Tilemap>();
     }
 
@@ -54,7 +60,7 @@ public class Board : MonoBehaviour
 
     public bool CheckPositionValid(Vector3Int position)
     {
-        if (GameManager.Instance._bounds.Contains((Vector2Int)position))
+        if (_bounds.Contains((Vector2Int)position))
         {
             return true;
         }

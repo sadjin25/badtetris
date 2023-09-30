@@ -48,7 +48,7 @@ public class Ghost : MonoBehaviour
     {
         Vector3Int pos = _position;
         int cur = pos.y;
-        int bottom = -GameManager.Instance._bounds.height / 2 - 1;
+        int bottom = -Board.Instance._bounds.height / 2 - 1;
         GameManager.Instance.Clear(_activePiece);
         for (int row = cur; row >= bottom; --row)
         {
