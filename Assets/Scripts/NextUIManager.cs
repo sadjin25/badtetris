@@ -3,31 +3,18 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class NextUIManager : MonoBehaviour
+public class NextUIManager : BaseUIManager
 {
-    public static NextUIManager Instance { get; private set; }
-
     [SerializeField] MinoUI[] _nextsArr;
 
-    void OnEnable()
+    public override void UIManagerEnable()
     {
         GameEventManager.OnNextMinoChanged += OnNextMinoChanged;
     }
 
-    void OnDisable()
+    public override void UIManagerDisable()
     {
         GameEventManager.OnNextMinoChanged -= OnNextMinoChanged;
-    }
-
-    void Awake()
-    {
-        if (Instance) Destroy(this);
-        Instance = this;
-    }
-
-    public void NextUIInit()
-    {
-        GameEventManager.OnNextMinoChanged += OnNextMinoChanged;
     }
 
     void OnNextMinoChanged(object s, GameEventManager.OnNextMinoChangedArgs e)

@@ -3,28 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using Tetris.EnumTypes;
 
-public class ScoreUIManager : MonoBehaviour
+public class ScoreUIManager : BaseUIManager
 {
-    public static ScoreUIManager Instance { get; private set; }
-
     [SerializeField] MinoUI _scoreUI;
     [SerializeField] float _scoreImageShowingTime = 0.6f;
     int _score;
 
-    void OnEnable()
+    public override void UIManagerEnable()
     {
         GameEventManager.OnScoring += OnScoring;
     }
 
-    void OnDisable()
+    public override void UIManagerDisable()
     {
         GameEventManager.OnScoring -= OnScoring;
-    }
-
-    void Awake()
-    {
-        if (Instance) Destroy(this);
-        Instance = this;
     }
 
     void OnScoring(object s, GameEventManager.OnScoringArgs e)

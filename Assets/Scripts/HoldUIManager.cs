@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class HoldUIManager : MonoBehaviour
 {
-    public static HoldUIManager Instance { get; private set; }
-
     List<Image> _baseImages;
 
     [SerializeField] MinoUI _holdMino;
@@ -23,9 +21,6 @@ public class HoldUIManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance) Destroy(this);
-        Instance = this;
-
         _baseImages = new List<Image>();
     }
 
